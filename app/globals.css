@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Oswald", system-ui, sans-serif;
+  --font-body: system-ui, "Segoe UI", Roboto, sans-serif;
+}
+
+html,
+body {
+  background: #0a0805;
+  color: #f3ead7;
+  scroll-behavior: smooth;
+}
+
+/* thanh cuộn theo tông ninja */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0805;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#ff7a18, #b71c1c);
+  border-radius: 8px;
+}
+
+@layer components {
+  /* nút bo góc kim loại kiểu game */
+  .btn-ninja {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-lg
+           bg-gradient-to-b from-ninja-orange to-ninja-blood px-6 py-3
+           font-display text-sm font-bold uppercase tracking-wider text-white
+           shadow-glow transition-all duration-200
+           hover:-translate-y-0.5 hover:shadow-glow-gold active:translate-y-0;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border
+           border-ninja-gold/60 bg-black/40 px-5 py-2.5 font-display text-sm
+           font-bold uppercase tracking-wider text-ninja-gold transition-all
+           duration-200 hover:bg-ninja-gold hover:text-black;
+  }
+
+  .panel {
+    @apply rounded-xl border border-ninja-gold/15 bg-ninja-panel/80
+           backdrop-blur-sm;
+  }
+
+  .section-title {
+    @apply font-display text-3xl font-extrabold uppercase tracking-widest
+           text-transparent bg-clip-text bg-gradient-to-b
+           from-ninja-gold to-ninja-orange md:text-4xl;
+  }
+}
+
+/* Cột avatar nhân vật: kéo bằng chuột, ẩn thanh cuộn */
+.char-scroll {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.char-scroll::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* ===== Scroll reveal ===== */
+.reveal {
+  opacity: 0;
+}
+.reveal.in {
+  opacity: 1;
+}
+@keyframes rv-up {
+  from { opacity: 0; transform: translateY(48px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rv-pop {
+  0% { opacity: 0; transform: scale(0.6) translateY(24px); }
+  60% { opacity: 1; transform: scale(1.08) translateY(0); }
+  100% { transform: scale(1) translateY(0); }
+}
+@keyframes rv-left {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rv-right {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: none; }
+}
+.reveal.in[data-v="up"] { animation: rv-up 0.8s ease-out both; }
+.reveal.in[data-v="pop"] {
+  animation: rv-pop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.reveal.in[data-v="left"] { animation: rv-left 0.8s ease-out both; }
+.reveal.in[data-v="right"] { animation: rv-right 0.8s ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.in {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* placeholder nền: thay bằng ảnh thật của bạn trong /public */
+.bg-scroll-paper {
+  background-image: radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 122, 24, 0.16),
+      transparent 55%
+    ),
+    linear-gradient(180deg, #0a0805 0%, #140d06 60%, #0a0805 100%);
+}

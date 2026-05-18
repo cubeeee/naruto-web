@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shinobi Đại Chiến - App Store</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --blue:#0066cc;
+    --text:#1d1d1f;
+    --text-sec:#6e6e73;
+    --line:#d2d2d7;
+    --bg:#fff;
+    --chip:#f5f5f7;
+  }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;
+    color:var(--text);
+    background:#fff;
+    -webkit-font-smoothing:antialiased;
+    font-size:17px;
+    line-height:1.5;
+  }
+  a{color:var(--blue);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  /* ---------- GLOBAL NAV ---------- */
+  .global-nav{
+    background:rgba(0,0,0,.8);backdrop-filter:saturate(180%) blur(20px);
+    height:44px;display:flex;align-items:center;justify-content:center;
+    gap:32px;color:#f5f5f7;font-size:12px;
+  }
+  .global-nav .apple{font-size:15px;}
+  .global-nav a{color:#d6d6d6;font-size:12px;}
+  .global-nav a:hover{color:#fff;text-decoration:none;}
+
+  /* ---------- APP STORE NAV ---------- */
+  .store-nav{
+    border-bottom:1px solid var(--line);
+    height:52px;display:flex;align-items:center;
+    max-width:980px;margin:0 auto;padding:0 22px;gap:28px;
+  }
+  .store-nav .store-logo{font-size:21px;font-weight:600;color:#1d1d1f;}
+  .store-nav .store-logo span{color:var(--blue);}
+  .store-nav ul{list-style:none;display:flex;gap:26px;font-size:14px;}
+  .store-nav ul a{color:#1d1d1f;}
+  .store-nav .search{margin-left:auto;color:var(--text-sec);font-size:14px;display:flex;align-items:center;gap:6px;}
+
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px;}
+
+  /* ---------- HERO ---------- */
+  .hero{display:flex;gap:24px;padding:32px 0 28px;border-bottom:1px solid var(--line);}
+  .app-icon{
+    width:130px;height:130px;border-radius:28px;flex-shrink:0;
+    object-fit:cover;
+    box-shadow:0 0 0 1px rgba(0,0,0,.08);
+  }
+  .hero-info{flex:1;display:flex;flex-direction:column;}
+  .hero-info h1{font-size:28px;font-weight:600;line-height:1.2;letter-spacing:-.02em;}
+  .hero-sub{font-size:17px;color:var(--text-sec);margin-top:2px;}
+  .hero-meta{font-size:13px;color:var(--text-sec);margin-top:auto;padding-top:16px;}
+  .hero-actions{display:flex;align-items:center;gap:18px;margin-top:14px;}
+  .btn-get{
+    background:var(--blue);color:#fff;border:0;
+    font-size:15px;font-weight:600;padding:7px 0;width:90px;
+    border-radius:18px;cursor:pointer;text-align:center;
+  }
+  .btn-get:hover{background:#0055b3;}
+  .share{color:var(--blue);font-size:14px;display:flex;align-items:center;gap:5px;cursor:pointer;}
+
+  /* ---------- STATS BAR ---------- */
+  .stats-bar{display:flex;border-bottom:1px solid var(--line);padding:18px 0;}
+  .stat{flex:1;text-align:center;border-right:1px solid var(--line);padding:0 6px;}
+  .stat:last-child{border-right:0;}
+  .stat .label{font-size:11px;font-weight:700;color:var(--text-sec);text-transform:uppercase;letter-spacing:.4px;}
+  .stat .value{font-size:17px;font-weight:600;color:var(--text-sec);margin-top:6px;}
+  .stat .sub{font-size:11px;color:var(--text-sec);margin-top:3px;}
+  .stat .stars{color:var(--text-sec);font-size:13px;letter-spacing:1px;margin-top:4px;}
+  .stat .age-badge{font-size:20px;font-weight:600;color:var(--text-sec);}
+
+  /* ---------- SCREENSHOTS ---------- */
+  .shots{display:flex;gap:16px;overflow-x:auto;padding:26px 0;}
+  .shots::-webkit-scrollbar{height:6px;}
+  .shots::-webkit-scrollbar-thumb{background:#c7c7cc;border-radius:3px;}
+  .shot{
+    width:230px;height:430px;border-radius:18px;flex-shrink:0;
+    background:linear-gradient(160deg,#1a1030,#3d2566 50%,#1a1030);
+    border:1px solid rgba(0,0,0,.06);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#d8c48a;text-align:center;padding:20px;position:relative;overflow:hidden;
+  }
+  .shot::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 50% 30%,rgba(200,155,60,.25),transparent 60%);
+  }
+  .shot .s-title{font-family:Georgia,serif;font-size:22px;font-weight:700;z-index:1;}
+  .shot .s-tag{font-size:12px;color:#9a86c0;margin-top:8px;z-index:1;}
+  .shot .hex{
+    width:60px;height:60px;margin-bottom:16px;z-index:1;
+    background:#c89b3c;
+    clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  }
+  .shot-img{
+    height:300px;width:auto;border-radius:18px;flex-shrink:0;
+    border:1px solid rgba(0,0,0,.06);object-fit:cover;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:26px 0;border-bottom:1px solid var(--line);}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;}
+  .sec-head h2{font-size:22px;font-weight:600;letter-spacing:-.01em;}
+  .sec-head a{font-size:15px;}
+  .desc{font-size:15px;color:var(--text);line-height:1.65;white-space:pre-line;}
+  .desc.collapsed{max-height:175px;overflow:hidden;position:relative;}
+  .desc.collapsed::after{content:"";position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,#fff);}
+  .more-btn{color:var(--blue);font-size:15px;background:none;border:0;cursor:pointer;margin-top:6px;font-family:inherit;}
+  .dev-line{margin-top:18px;font-size:15px;}
+  .dev-line .lbl{color:var(--text-sec);}
+
+  /* ---------- EVENT ---------- */
+  .event-card{
+    border-radius:16px;overflow:hidden;border:1px solid var(--line);
+    display:flex;background:#faf7ff;
+  }
+  .event-thumb{
+    width:120px;flex-shrink:0;
+    background:linear-gradient(150deg,#3d2566,#c89b3c);
+  }
+  .event-body{padding:16px 18px;}
+  .event-kicker{font-size:11px;font-weight:700;color:#a0522d;text-transform:uppercase;letter-spacing:.5px;}
+  .event-text{font-size:15px;margin-top:6px;line-height:1.5;}
+
+  /* ---------- RATINGS ---------- */
+  .rate-summary{display:flex;align-items:center;gap:40px;flex-wrap:wrap;margin:8px 0 24px;}
+  .rate-score{font-size:64px;font-weight:700;line-height:1;}
+  .rate-score small{font-size:22px;color:var(--text-sec);font-weight:600;}
+  .rate-of{font-size:15px;color:var(--text-sec);}
+  .rate-bars{flex:1;min-width:240px;max-width:340px;}
+  .rb{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+  .rb .stars{font-size:10px;color:#c7c7cc;letter-spacing:1px;width:60px;text-align:right;}
+  .rb .track{flex:1;height:8px;background:#e9e9eb;border-radius:4px;overflow:hidden;}
+  .rb .fill{height:100%;background:#86868b;border-radius:4px;}
+  .rate-count{text-align:right;font-size:15px;color:var(--text-sec);min-width:100px;}
+  .rate-count b{display:block;font-size:34px;color:var(--text);font-weight:700;}
+
+  .review-row{display:flex;gap:20px;overflow-x:auto;padding-bottom:10px;}
+  .review-card{
+    width:300px;flex-shrink:0;border:1px solid var(--line);
+    border-radius:14px;padding:18px;background:#fbfbfd;
+  }
+  .rc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+  .rc-title{font-size:16px;font-weight:600;}
+  .rc-stars{color:#1d1d1f;font-size:12px;letter-spacing:1px;margin:6px 0;}
+  .rc-meta{font-size:12px;color:var(--text-sec);margin-bottom:10px;}
+  .rc-text{font-size:14px;line-height:1.55;color:#1d1d1f;}
+  .rc-reply{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);}
+  .rc-reply .rl{font-size:13px;font-weight:600;color:var(--text-sec);margin-bottom:6px;}
+  .rc-reply .rt{font-size:13px;color:var(--text-sec);line-height:1.5;}
+
+  /* ---------- WHATS NEW ---------- */
+  .ver-row{display:flex;justify-content:space-between;font-size:14px;color:var(--text-sec);margin-bottom:14px;}
+
+  /* ---------- INFO GRID ---------- */
+  .info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;}
+  .info-cell{padding:14px 0;border-bottom:1px solid var(--line);padding-right:30px;}
+  .info-cell .k{font-size:13px;color:var(--text-sec);margin-bottom:4px;}
+  .info-cell .v{font-size:15px;color:var(--text);}
+  .iap-list{margin-top:6px;}
+  .iap-list .iap{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px solid #ededed;color:var(--text);max-width:360px;}
+  .iap-list .iap span:last-child{color:var(--text-sec);}
+
+  /* ---------- PRIVACY ---------- */
+  .priv-intro{font-size:15px;line-height:1.6;color:var(--text);margin-bottom:20px;}
+  .priv-block{margin-bottom:22px;}
+  .priv-block h3{font-size:17px;font-weight:600;display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .priv-block .pi{
+    width:34px;height:34px;border-radius:8px;background:var(--chip);
+    display:flex;align-items:center;justify-content:center;font-size:18px;
+  }
+  .priv-block p{font-size:14px;color:var(--text-sec);line-height:1.55;margin-left:44px;}
+  .priv-tags{margin-left:44px;margin-top:6px;font-size:14px;color:var(--text);}
+
+  /* ---------- APP ROW ---------- */
+  .app-mini-row{display:flex;gap:22px;overflow-x:auto;padding-bottom:8px;}
+  .app-mini{width:90px;flex-shrink:0;text-align:center;cursor:pointer;}
+  .app-mini .mi{
+    width:84px;height:84px;border-radius:18px;margin:0 auto 8px;
+    background:linear-gradient(145deg,#2a1a4a,#6b3fa0,#c89b3c);
+    border:1px solid rgba(0,0,0,.06);
+  }
+  .app-mini .mn{font-size:12px;color:var(--text);line-height:1.3;}
+  .app-mini .md{font-size:11px;color:var(--text-sec);}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:#f5f5f7;font-size:12px;color:var(--text-sec);}
+  .foot-in{max-width:980px;margin:0 auto;padding:22px;}
+  .foot-in .copy{padding:14px 0;border-top:1px solid var(--line);}
+  .foot-links{display:flex;gap:20px;flex-wrap:wrap;padding-bottom:14px;}
+  .foot-links a{color:var(--text-sec);}
+
+  @media(max-width:740px){
+    .store-nav ul{display:none;}
+    .info-grid{grid-template-columns:1fr;}
+    .hero-info h1{font-size:22px;}
+    .app-icon{width:100px;height:100px;font-size:34px;}
+    .rate-score{font-size:48px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="global-nav">
+  <span class="apple"></span>
+  <a href="#">Store</a><a href="#">Mac</a><a href="#">iPhone</a>
+  <a href="#">iPad</a><a href="#">Watch</a><a href="#">Hỗ trợ</a>
+</div>
+
+<nav class="store-nav">
+  <div class="store-logo">App <span>Store</span></div>
+  <ul>
+    <li><a href="#">Hôm nay</a></li>
+    <li><a href="#">Trò chơi</a></li>
+    <li><a href="#">Ứng dụng</a></li>
+    <li><a href="#">Arcade</a></li>
+  </ul>
+  <div class="search">🔍 Tìm Kiếm</div>
+</nav>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <img class="app-icon" src="/app-icon.jpg" alt="Shinobi Đại Chiến">
+    <div class="hero-info">
+      <h1>Shinobi Đại Chiến</h1>
+      <div class="hero-sub">Game Thẻ Bài Nhập Vai Ninja</div>
+      <div class="hero-meta">Miễn phí · Mua in-app · Được thiết kế cho iPhone, iPad.</div>
+      <div class="hero-actions">
+        <button class="btn-get">NHẬN</button>
+        <div class="share">↗ Chia sẻ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="label">771 Xếp Hạng</div>
+      <div class="value">3,8</div>
+      <div class="stars">★★★★☆</div>
+    </div>
+    <div class="stat">
+      <div class="label">Độ Tuổi</div>
+      <div class="value">3+</div>
+      <div class="sub">Tuổi</div>
+    </div>
+    <div class="stat">
+      <div class="label">Danh Mục</div>
+      <div class="value">🎮</div>
+      <div class="sub">Nhập Vai</div>
+    </div>
+    <div class="stat">
+      <div class="label">Nhà Phát Triển</div>
+      <div class="value">👤</div>
+      <div class="sub">Q REALTOR CON</div>
+    </div>
+    <div class="stat">
+      <div class="label">Ngôn Ngữ</div>
+      <div class="value">VI</div>
+      <div class="sub">+ 20 ngôn ngữ</div>
+    </div>
+  </div>
+
+  <!-- SCREENSHOTS -->
+  <div class="shots">
+    <img class="shot-img" src="https://play-lh.googleusercontent.com/XD77_IemQd1PlFw65jTx_eDHuUiRnkjGfEUb-9l3RmbNNvJ9xdebeHntamE9bGeHEjgfdTmKhrsnp3zCPpJd=w526-h296" alt="ảnh chụp màn hình">
+    <img class="shot-img" src="https://play-lh.googleusercontent.com/0n7uf25qJz9EK-PfxqDwpWrLPZLG3-XLN5nO_g_XUvJcuWgmUIzyYmg-gRlFleIuGwqY7Ragf5vPK1NBdnnCNOw=w526-h296" alt="ảnh chụp màn hình">
+    <img class="shot-img" src="https://play-lh.googleusercontent.com/6nmORd8Uj6lJhFhFVTxCV9SrHN0PYI72Ke0oznqPYLG6AeptcN_YyE6N7nV2jQedj5ToBgdLM4ogw9Ae8k4R7g=w526-h296" alt="ảnh chụp màn hình">
+    <img class="shot-img" src="https://play-lh.googleusercontent.com/LHXtnkJgQZu8bKEUW6Wv5TlgboZ-lOYFhhr6esU65nQtehqQ3_35mYLM_h-QYpztP7t1Hy0UgWoIMt05GQQJyg=w526-h296" alt="ảnh chụp màn hình">
+    <img class="shot-img" src="https://play-lh.googleusercontent.com/e4GnYMZoumOQCIty5q5Mmxjf2_t3XoVWDuMa51k14MEMAjBPpO17U-qzumApVtO3NOTkLm9grsTkCY_fTO72=w526-h296" alt="ảnh chụp màn hình">
+  </div>
+
+  <!-- DESCRIPTION -->
+  <section>
+    <div class="desc collapsed" id="desc">"Shinobi Đại Chiến" là một game thẻ bài di động nhàn rỗi với phần thưởng hậu hĩnh. Game tái hiện các sự kiện và nhân vật anime kinh điển. Ninja có thể rèn luyện ý chí và phát triển bản thân một cách độc lập, hoặc hợp tác với người chơi khác trong các trận chiến PVP. Trải nghiệm những trận chiến ninja gay cấn và tạo nên Làng Lá của riêng bạn!
+
+[Tái hiện Anime chân thực]
+Khám phá những khung cảnh chân thực của Làng Lá. Sống lại những khoảnh khắc kinh điển từ Kỳ thi Chunin, Đại chiến Tam Ninja, cuộc truy đuổi Sasuke, Trận chiến Thung lũng Tận cùng... và khơi dậy niềm đam mê chiến đấu!
+
+[Thu thập Ninja, Chiến đấu theo ý muốn]
+Tạo nên những ninja huyền thoại của riêng bạn. Từ Mười Hai Ninja của Làng Lá, các Jounin, Tam Ninja Huyền Thoại, Ninja của Vùng Đất Cát, và hàng trăm ninja lừng danh khác, cuộc phiêu lưu của bạn sẽ không bao giờ đơn độc!
+
+[Thử thách Sinh tồn, Thống trị Thế giới Ninja]
+Chọn đội hình ninja mạnh nhất, xây dựng đội hình ninja mạnh nhất, kết bạn, thách đấu với các cao thủ và sát cánh chiến đấu để giành phần thưởng hậu hĩnh khi hoàn thành các cấp độ!
+
+Tải xuống và chơi Shinobi Đại Chiến ngay hôm nay!</div>
+    <button class="more-btn" id="moreBtn">thêm</button>
+    <div class="dev-line"><span class="lbl">Nhà phát triển</span> <a href="#">Q REALTOR CON</a></div>
+  </section>
+
+  <!-- RATINGS -->
+  <section>
+    <div class="sec-head"><h2>Xếp hạng & nhận xét</h2><a href="#">Xem Tất Cả</a></div>
+    <div class="rate-summary">
+      <div>
+        <div class="rate-score">3,8<small>/5</small></div>
+        <div class="rate-of">771 Xếp hạng</div>
+      </div>
+      <div class="rate-bars">
+        <div class="rb"><span class="stars">★★★★★</span><div class="track"><div class="fill" style="width:64%"></div></div></div>
+        <div class="rb"><span class="stars">★★★★</span><div class="track"><div class="fill" style="width:14%"></div></div></div>
+        <div class="rb"><span class="stars">★★★</span><div class="track"><div class="fill" style="width:7%"></div></div></div>
+        <div class="rb"><span class="stars">★★</span><div class="track"><div class="fill" style="width:5%"></div></div></div>
+        <div class="rb"><span class="stars">★</span><div class="track"><div class="fill" style="width:10%"></div></div></div>
+      </div>
+      <div class="rate-count"><b>3,8</b>trên 5</div>
+    </div>
+
+    <div class="review-row">
+      <div class="review-card">
+        <div class="rc-top"><div class="rc-title">Cần cải thiện thêm</div></div>
+        <div class="rc-stars">★★★☆☆</div>
+        <div class="rc-meta">21/11/2023 · CaptainToni</div>
+        <div class="rc-text">Ngày này cũng đã tới, nên có thêm 60 fps và tùy chỉnh đồ họa. Máy mình mạnh nhưng ko chỉnh đồ họa như trên pc dc nên nhìn hình ảnh khá nản</div>
+      </div>
+
+      <div class="review-card">
+        <div class="rc-top"><div class="rc-title">Lỗi đăng nhập nhiều</div></div>
+        <div class="rc-stars">★★☆☆☆</div>
+        <div class="rc-meta">08/12/2023 · nhat khoa pro</div>
+        <div class="rc-text">Mỗi lần chơi lại phải đăng nhập, hết ván lại bị out, lỗi mạng…</div>
+        <div class="rc-reply">
+          <div class="rl">Phản Hồi Từ Nhà Phát Triển · 09/12/2023</div>
+          <div class="rt">Rất xin lỗi vì trải nghiệm không tốt của bạn. Bạn hãy kiểm tra thiết bị, vì có thể không còn nằm trong danh sách hỗ trợ sau bản 13.24. Vui lòng thử đăng nhập trên PC hoặc thiết bị được hỗ trợ nhé.</div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="rc-top"><div class="rc-title">Lỗi game chơi xong 1 trận bị out</div></div>
+        <div class="rc-stars">★★☆☆☆</div>
+        <div class="rc-meta">01/12/2023 · vanhungspg6</div>
+        <div class="rc-text">Lỗi game chơi xong 1 trận bị out ra</div>
+        <div class="rc-reply">
+          <div class="rl">Phản Hồi Từ Nhà Phát Triển · 04/12/2023</div>
+          <div class="rt">Chúng tôi rất tiếc khi biết rằng bạn đang gặp vấn đề kỹ thuật. Vui lòng gửi phiếu yêu cầu để chúng tôi hỗ trợ bạn tốt hơn!</div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="rc-top"><div class="rc-title">Cần có chỗ setup ngôn ngữ trong game</div></div>
+        <div class="rc-stars">★★★☆☆</div>
+        <div class="rc-meta">27/11/2023 · anhdev97</div>
+        <div class="rc-text">Mình dùng macbook chơi game, để tiếng anh nhưng vào game cần tiếng việt mà trong game ko setup ngôn ngữ được.</div>
+        <div class="rc-reply">
+          <div class="rl">Phản Hồi Từ Nhà Phát Triển · 29/11/2023</div>
+          <div class="rt">Chúng tôi rất tiếc về trải nghiệm này và trân trọng đánh giá của bạn. Nếu còn thắc mắc, vui lòng gửi phiếu yêu cầu để được hỗ trợ tốt hơn!</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIVACY -->
+  <section>
+    <div class="sec-head"><h2>Chế độ riêng tư cho ứng dụng</h2></div>
+    <div class="priv-intro">Nhà phát triển, <b>Q REALTOR CON CECILIA LLC</b>, đã cho biết rằng biện pháp thực hành quyền riêng tư của ứng dụng có thể bao gồm việc xử lý dữ liệu như được mô tả ở bên dưới. Thông tin này chưa được Apple xác minh.</div>
+
+    <div class="priv-block">
+      <h3><span class="pi">📍</span> Dữ Liệu Được Dùng Để Theo Dõi Bạn</h3>
+      <p>Dữ liệu sau đây có thể được sử dụng để theo dõi bạn trên các ứng dụng và trang web do các công ty khác sở hữu:</p>
+      <div class="priv-tags">Mã Định Danh</div>
+    </div>
+
+    <div class="priv-block">
+      <h3><span class="pi">🔗</span> Dữ Liệu Liên Kết Với Bạn</h3>
+      <p>Dữ liệu sau đây có thể được thu thập và liên kết với danh tính của bạn:</p>
+      <div class="priv-tags">Mục Mua · Thông Tin Liên Hệ · Nội Dung Của Người Dùng · Mã Định Danh · Dữ Liệu Sử Dụng · Chẩn Đoán · Dữ Liệu Khác</div>
+    </div>
+
+    <div class="priv-block">
+      <h3><span class="pi">📊</span> Dữ Liệu Không Liên Kết Với Bạn</h3>
+      <p>Dữ liệu sau đây có thể được thu thập nhưng không liên kết với danh tính của bạn:</p>
+      <div class="priv-tags">Dữ Liệu Sử Dụng</div>
+    </div>
+    <p style="font-size:14px;color:var(--text-sec);margin-top:6px;">Biện pháp thực hành quyền riêng tư có thể thay đổi, ví dụ như dựa trên các tính năng mà bạn sử dụng hoặc tuổi của bạn. <a href="#">Tìm hiểu thêm</a></p>
+  </section>
+
+  <!-- INFO -->
+  <section>
+    <div class="sec-head"><h2>Thông Tin</h2></div>
+    <div class="info-grid">
+      <div class="info-cell"><div class="k">Nhà cung cấp</div><div class="v">Q REALTOR CON CECILIA LLC</div></div>
+      <div class="info-cell"><div class="k">Kích cỡ</div><div class="v">191,5 MB</div></div>
+      <div class="info-cell"><div class="k">Danh mục</div><div class="v">Chiến Thuật</div></div>
+      <div class="info-cell"><div class="k">Tương thích</div><div class="v">iPhone, iPad, iPod touch, Mac (M1+), Apple Vision · Yêu cầu iOS 13.0 trở lên</div></div>
+      <div class="info-cell"><div class="k">Ngôn ngữ</div><div class="v">Tiếng Việt và 20 ngôn ngữ khác</div></div>
+      <div class="info-cell"><div class="k">Tuổi</div><div class="v">13+ · Bạo lực kỳ ảo không thường xuyên, Hộp Loot, Nhắn tin và trò chuyện</div></div>
+      <div class="info-cell"><div class="k">Bản quyền</div><div class="v">© Q Realtor Con Cecilia LLC</div></div>
+      <div class="info-cell"><div class="k">Liên kết</div><div class="v"><a href="#">Trang web nhà phát triển</a> · <a href="#">Chính sách quyền riêng tư</a></div></div>
+      <div class="info-cell" style="grid-column:1/-1;">
+        <div class="k">Mua In-App</div>
+        <div class="iap-list">
+          <div class="iap"><span>575 Kim Cương</span><span>99.000đ</span></div>
+          <div class="iap"><span>1380 Kim Cương</span><span>229.000đ</span></div>
+          <div class="iap"><span>2800 Kim Cương</span><span>429.000đ</span></div>
+          <div class="iap"><span>4500 Kim Cương</span><span>679.000đ</span></div>
+          <div class="iap"><span>6500 Kim Cương</span><span>979.000đ</span></div>
+          <div class="iap"><span>Gói 13500 Kim Cương</span><span>1.999.000đ</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MORE BY DEV -->
+  <section>
+    <div class="sec-head"><h2>Ứng Dụng Khác Của Q REALTOR CON CECILIA LLC</h2><a href="#">Xem Tất Cả</a></div>
+    <div class="app-mini-row">
+      <div class="app-mini"><div class="mi"></div><div class="mn">Manga Battle: Tiny Hero</div><div class="md">Trò chơi</div></div>
+      <div class="app-mini"><div class="mi"></div><div class="mn">Shinigami Adventure</div><div class="md">Trò chơi</div></div>
+      <div class="app-mini"><div class="mi"></div><div class="mn">Clash Survival: Last War</div><div class="md">Trò chơi</div></div>
+      <div class="app-mini"><div class="mi"></div><div class="mn">Sailing Legends</div><div class="md">Trò chơi</div></div>
+      <div class="app-mini"><div class="mi"></div><div class="mn">Manga Mayhem: Unity</div><div class="md">Trò chơi</div></div>
+      <div class="app-mini"><div class="mi"></div><div class="mn">Pirate Wano War</div><div class="md">Trò chơi</div></div>
+    </div>
+  </section>
+
+  <!-- ALSO LIKE -->
+  <section style="border-bottom:0;">
+    <div class="sec-head"><h2>Có Thể Bạn Cũng Thích</h2><a href="#">Xem Tất Cả</a></div>
+    <div class="app-mini-row">
+      <div class="app-mini"><div class="mi"></div><div class="mn">Ninja Heroes</div><div class="md">Trò chơi</div></div>
+      <div class="app-mini"><div class="mi"></div><div class="mn">Anime Card Saga</div><div class="md">Trò chơi</div></div>
+      <div class="app-mini"><div class="mi"></div><div class="mn">Shinobi Legends</div><div class="md">Trò chơi</div></div>
+      <div class="app-mini"><div class="mi"></div><div class="mn">Manga Mayhem: Unity</div><div class="md">Trò chơi</div></div>
+      <div class="app-mini"><div class="mi"></div><div class="mn">Pirate Wano War</div><div class="md">Trò chơi</div></div>
+      <div class="app-mini"><div class="mi"></div><div class="mn">Tiny Hero Idle RPG</div><div class="md">Trò chơi</div></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="foot-in">
+    <div class="foot-links">
+      <a href="#">Trang web nhà phát triển</a>
+      <a href="#">Chính sách quyền riêng tư</a>
+      <a href="#">Hỗ trợ</a>
+    </div>
+    <div class="copy">
+      Bản quyền © 2026 Apple Inc. Giữ toàn quyền. &nbsp;·&nbsp;
+      <a href="#">Điều khoản dịch vụ internet</a> ·
+      <a href="#">App Store &amp; Quyền riêng tư</a> ·
+      <a href="#">Cảnh báo về cookie</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const desc=document.getElementById('desc');
+  const btn=document.getElementById('moreBtn');
+  btn.addEventListener('click',()=>{
+    desc.classList.toggle('collapsed');
+    btn.textContent=desc.classList.contains('collapsed')?'thêm':'thu gọn';
+  });
+  document.querySelector('.btn-get').addEventListener('click',function(){
+    this.textContent='ĐANG TẢI';
+    setTimeout(()=>{this.textContent='MỞ';},1500);
+  });
+</script>
+
+</body>
+</html>

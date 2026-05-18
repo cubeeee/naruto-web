@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shinobi Đại Chiến - Ứng dụng trên Google Play</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --green:#01875f;
+    --green-dark:#016b4c;
+    --text:#1f1f1f;
+    --text-sec:#5f6368;
+    --line:#dadce0;
+    --bg:#fff;
+    --hover:#f1f3f4;
+  }
+  body{
+    font-family:"Roboto","Google Sans",Arial,sans-serif;
+    color:var(--text);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  .material-icons{font-family:'Material Icons';font-style:normal;vertical-align:middle;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:#fff;
+    border-bottom:1px solid var(--line);
+    height:64px;
+    display:flex;align-items:center;
+    padding:0 24px;gap:20px;
+  }
+  .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:500;color:#5f6368;}
+  .logo .play-logo{
+    height:26px;width:auto;display:block;
+  }
+  .logo .play-word{color:#5f6368;font-family:"Google Sans";}
+  nav.top-nav{display:flex;gap:24px;font-size:14px;color:#5f6368;font-weight:500;}
+  nav.top-nav a:hover{color:var(--text);}
+  .header-right{margin-left:auto;display:flex;align-items:center;gap:18px;color:#5f6368;}
+  .header-right .material-icons{font-size:24px;cursor:pointer;}
+  .avatar{width:32px;height:32px;border-radius:50%;background:#1a73e8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;cursor:pointer;}
+  .search-box{
+    display:flex;align-items:center;background:#f1f3f4;border-radius:24px;
+    padding:8px 16px;width:280px;color:#5f6368;font-size:14px;
+  }
+  .search-box .material-icons{font-size:20px;margin-right:10px;}
+  .search-box input{border:0;background:transparent;outline:0;font-size:14px;width:100%;font-family:inherit;}
+
+  /* ---------- LAYOUT ---------- */
+  .container{max-width:1280px;margin:0 auto;padding:24px 24px 60px;}
+  .breadcrumb{font-size:12px;color:var(--text-sec);margin-bottom:24px;display:flex;gap:6px;align-items:center;}
+
+  .app-head{display:flex;gap:56px;flex-wrap:wrap;}
+  .app-main{flex:1;min-width:320px;}
+  .app-title{font-family:"Google Sans";font-size:56px;font-weight:400;line-height:1.1;margin-bottom:6px;}
+  .app-dev{color:var(--green);font-size:16px;font-weight:500;margin-bottom:4px;display:inline-block;}
+  .app-dev:hover{text-decoration:underline;}
+  .app-sub{color:var(--text-sec);font-size:12px;margin-bottom:24px;}
+
+  .stats{display:flex;gap:0;margin:24px 0 28px;}
+  .stat{padding:0 22px;border-right:1px solid var(--line);text-align:center;}
+  .stat:first-child{padding-left:0;}
+  .stat:last-child{border-right:0;}
+  .stat-top{font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:3px;}
+  .stat-top .material-icons{font-size:16px;}
+  .stat-bottom{font-size:12px;color:var(--text-sec);margin-top:4px;}
+  .rating-badge{width:24px;height:18px;display:inline-block;}
+
+  .actions{display:flex;align-items:center;gap:28px;margin-bottom:20px;flex-wrap:wrap;}
+  .btn-install{
+    background:var(--green);color:#fff;border:0;
+    padding:11px 60px;border-radius:8px;font-size:15px;font-weight:600;
+    font-family:"Google Sans";cursor:pointer;transition:.15s;
+  }
+  .btn-install:hover{background:var(--green-dark);box-shadow:0 1px 3px rgba(0,0,0,.3);}
+  .icon-action{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--green);font-size:13px;font-weight:500;cursor:pointer;}
+  .icon-action .material-icons{font-size:22px;}
+  .device-row{display:flex;align-items:center;gap:8px;color:var(--text-sec);font-size:13px;margin-top:8px;}
+  .device-row .material-icons{font-size:18px;}
+
+  .app-icon-wrap{width:240px;flex-shrink:0;}
+  .app-icon-wrap img{width:100%;border-radius:24px;box-shadow:0 1px 4px rgba(0,0,0,.15);}
+
+  /* ---------- SCREENSHOTS ---------- */
+  .shots{display:flex;gap:14px;overflow-x:auto;padding:32px 0 16px;scroll-behavior:smooth;}
+  .shots::-webkit-scrollbar{height:8px;}
+  .shots::-webkit-scrollbar-thumb{background:#dadce0;border-radius:4px;}
+  .shots img{height:200px;border-radius:12px;flex-shrink:0;border:1px solid var(--line);}
+
+  /* ---------- SECTIONS ---------- */
+  section{margin-top:44px;}
+  .sec-title{font-family:"Google Sans";font-size:22px;font-weight:500;display:flex;align-items:center;gap:8px;margin-bottom:18px;cursor:pointer;}
+  .sec-title .material-icons{font-size:20px;color:var(--text-sec);}
+  .desc{font-size:14px;line-height:1.7;color:#3c4043;white-space:pre-line;}
+  .updated{margin-top:24px;font-size:13px;}
+  .updated .lbl{color:var(--text-sec);}
+  .tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+  .tag{border:1px solid var(--line);border-radius:16px;padding:7px 14px;font-size:13px;color:#3c4043;cursor:pointer;transition:.15s;}
+  .tag:hover{background:var(--hover);}
+
+  /* ---------- DATA SAFETY ---------- */
+  .ds-box{border:1px solid var(--line);border-radius:12px;padding:20px;}
+  .ds-intro{font-size:14px;line-height:1.7;color:#3c4043;margin-bottom:18px;}
+  .ds-item{display:flex;gap:16px;padding:16px 4px;border-bottom:1px solid #ededed;}
+  .ds-item:last-of-type{border-bottom:0;}
+  .ds-item .material-icons{font-size:20px;color:var(--text-sec);margin-top:2px;}
+  .ds-item .ds-txt{font-size:14px;color:#3c4043;line-height:1.5;}
+  .ds-link{color:var(--green);font-weight:500;font-size:14px;display:inline-flex;align-items:center;gap:4px;margin-top:14px;}
+
+  /* ---------- RATINGS ---------- */
+  .rate-grid{display:flex;gap:60px;flex-wrap:wrap;align-items:center;}
+  .rate-big{text-align:center;}
+  .rate-num{font-size:56px;font-family:"Google Sans";font-weight:400;}
+  .rate-stars{color:var(--green);font-size:16px;letter-spacing:2px;}
+  .rate-count{color:var(--text-sec);font-size:13px;margin-top:6px;}
+  .rate-bars{flex:1;min-width:280px;max-width:420px;}
+  .bar-row{display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:13px;color:var(--text-sec);}
+  .bar-track{flex:1;height:10px;background:#e8eaed;border-radius:5px;overflow:hidden;}
+  .bar-fill{height:100%;background:var(--green);border-radius:5px;}
+  .device-tabs{display:flex;gap:10px;margin:24px 0;}
+  .dtab{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:18px;padding:8px 16px;font-size:13px;color:#3c4043;cursor:pointer;}
+  .dtab.active{background:#e6f4ea;color:var(--green);border-color:#b6dfc6;}
+  .dtab .material-icons{font-size:18px;}
+
+  .review{padding:24px 0;border-bottom:1px solid #ededed;}
+  .rv-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .rv-avatar{width:32px;height:32px;border-radius:50%;background:#7b1fa2;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;}
+  .rv-name{font-size:14px;font-weight:500;}
+  .rv-more{margin-left:auto;color:var(--text-sec);cursor:pointer;}
+  .rv-meta{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .rv-stars{color:var(--green);font-size:12px;letter-spacing:1px;}
+  .rv-date{font-size:12px;color:var(--text-sec);}
+  .rv-text{font-size:14px;color:#3c4043;line-height:1.6;margin-bottom:12px;}
+  .rv-help{font-size:12px;color:var(--text-sec);}
+  .rv-helpful{display:flex;align-items:center;gap:14px;margin-top:8px;font-size:13px;}
+  .rv-helpful button{border:1px solid var(--line);background:#fff;border-radius:16px;padding:6px 18px;font-size:13px;cursor:pointer;font-family:inherit;}
+  .see-all{color:var(--green);font-weight:500;font-size:14px;margin-top:20px;display:inline-block;}
+
+  /* ---------- SUPPORT ---------- */
+  .sup-row{display:flex;align-items:flex-start;gap:14px;padding:14px 0;font-size:14px;color:#3c4043;border-bottom:1px solid #ededed;}
+  .sup-row .material-icons{font-size:20px;color:var(--text-sec);}
+  .dev-info{margin-top:20px;font-size:14px;color:#3c4043;line-height:1.8;}
+  .dev-info b{font-weight:500;}
+
+  /* ---------- SIMILAR ---------- */
+  .sim-grid{display:flex;gap:22px;overflow-x:auto;padding-bottom:12px;}
+  .sim-card{width:150px;flex-shrink:0;cursor:pointer;}
+  .sim-card img{width:150px;height:150px;border-radius:18px;border:1px solid var(--line);object-fit:cover;}
+  .sim-name{font-size:14px;font-weight:500;margin-top:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sim-dev{font-size:12px;color:var(--text-sec);}
+  .sim-rate{font-size:12px;color:var(--text-sec);display:flex;align-items:center;gap:3px;margin-top:2px;}
+  .sim-rate .material-icons{font-size:13px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line);background:#fff;padding:40px 24px;}
+  .foot-inner{max-width:1280px;margin:0 auto;display:flex;gap:80px;flex-wrap:wrap;}
+  .foot-col h4{font-size:14px;font-weight:500;margin-bottom:16px;}
+  .foot-col a{display:block;font-size:13px;color:var(--text-sec);margin-bottom:14px;}
+  .foot-col a:hover{color:var(--text);}
+  .foot-bottom{max-width:1280px;margin:30px auto 0;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--text-sec);}
+
+  @media(max-width:760px){
+    .search-box{display:none;}
+    nav.top-nav{display:none;}
+    .app-title{font-size:36px;}
+    .app-head{gap:24px;}
+    .app-icon-wrap{width:120px;}
+    .container{padding:16px 16px 40px;}
+    .rate-num{font-size:42px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="logo">
+    <img class="play-logo" src="/png-clipart-google-play-books-play-store-angle-rectangle-thumbnail.png" alt="Google Play">
+    <span class="play-word">Google Play</span>
+  </a>
+  <nav class="top-nav">
+    <a href="#">Trò chơi</a>
+    <a href="#">Ứng dụng</a>
+    <a href="#">Trẻ em</a>
+  </nav>
+  <div class="header-right">
+    <div class="search-box">
+      <span class="material-icons">search</span>
+      <input placeholder="Tìm kiếm ứng dụng và trò chơi">
+    </div>
+    <span class="material-icons">help_outline</span>
+    <div class="avatar">A</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="breadcrumb">
+    <a href="#">Trò chơi</a> <span>›</span> <a href="#">Nhập vai</a>
+  </div>
+
+  <!-- APP HEAD -->
+  <div class="app-head">
+    <div class="app-main">
+      <h1 class="app-title">Shinobi Đại Chiến</h1>
+      <a href="#" class="app-dev">Q REALTOR CON</a>
+      <div class="app-sub">Có quảng cáo · Mua hàng trong ứng dụng</div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-top">3,8 <span class="material-icons" style="color:#01875f;">star</span></div>
+          <div class="stat-bottom">771 bài đánh giá</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top">
+            <img class="rating-badge" src="https://play-lh.googleusercontent.com/_re6mcALPaqotePA0WkgYeOQ6TighHRUS62FRmREPEhyZPdGM3QmRjcSpiMt6Pz1O-WZyvEIy4mtGHj9zw=w48-h16" alt="3+">
+          </div>
+          <div class="stat-bottom">3 tuổi trở lên <span class="material-icons" style="font-size:12px;">info</span></div>
+        </div>
+        <div class="stat">
+          <div class="stat-top">100 N+</div>
+          <div class="stat-bottom">Lượt tải xuống</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-install">Cài đặt</button>
+        <div class="icon-action">
+          <span class="material-icons">favorite_border</span>
+          Thêm vào danh sách yêu thích
+        </div>
+      </div>
+
+      <div class="device-row">
+        <span class="material-icons">devices</span>
+        Ứng dụng này hoạt động trên một số thiết bị của bạn
+      </div>
+    </div>
+
+    <div class="app-icon-wrap">
+      <img src="/app-icon.jpg" alt="Shinobi Đại Chiến">
+    </div>
+  </div>
+
+  <!-- SCREENSHOTS -->
+  <div class="shots">
+    <img src="https://play-lh.googleusercontent.com/XD77_IemQd1PlFw65jTx_eDHuUiRnkjGfEUb-9l3RmbNNvJ9xdebeHntamE9bGeHEjgfdTmKhrsnp3zCPpJd=w526-h296" alt="screenshot">
+    <img src="https://play-lh.googleusercontent.com/0n7uf25qJz9EK-PfxqDwpWrLPZLG3-XLN5nO_g_XUvJcuWgmUIzyYmg-gRlFleIuGwqY7Ragf5vPK1NBdnnCNOw=w526-h296" alt="screenshot">
+    <img src="https://play-lh.googleusercontent.com/6nmORd8Uj6lJhFhFVTxCV9SrHN0PYI72Ke0oznqPYLG6AeptcN_YyE6N7nV2jQedj5ToBgdLM4ogw9Ae8k4R7g=w526-h296" alt="screenshot">
+    <img src="https://play-lh.googleusercontent.com/LHXtnkJgQZu8bKEUW6Wv5TlgboZ-lOYFhhr6esU65nQtehqQ3_35mYLM_h-QYpztP7t1Hy0UgWoIMt05GQQJyg=w526-h296" alt="screenshot">
+    <img src="https://play-lh.googleusercontent.com/e4GnYMZoumOQCIty5q5Mmxjf2_t3XoVWDuMa51k14MEMAjBPpO17U-qzumApVtO3NOTkLm9grsTkCY_fTO72=w526-h296" alt="screenshot">
+  </div>
+
+  <!-- ABOUT -->
+  <section>
+    <div class="sec-title">Giới thiệu về trò chơi này <span class="material-icons">arrow_forward</span></div>
+    <div class="desc">"Shinobi Đại Chiến" là một game thẻ bài di động nhàn rỗi với phần thưởng hậu hĩnh. Game tái hiện các sự kiện và nhân vật anime kinh điển. Ninja có thể rèn luyện ý chí và phát triển bản thân một cách độc lập, hoặc hợp tác với người chơi khác trong các trận chiến PVP. Trải nghiệm những trận chiến ninja gay cấn và tạo nên Làng Lá của riêng bạn!
+
+[Tái hiện Anime chân thực]
+Khám phá những khung cảnh chân thực của Làng Lá. Sống lại những khoảnh khắc kinh điển từ Kỳ thi Chunin, Đại chiến Tam Ninja, cuộc truy đuổi Sasuke, Trận chiến Thung lũng Tận cùng... và khơi dậy niềm đam mê chiến đấu!
+
+[Thu thập Ninja, Chiến đấu theo ý muốn]
+Tạo nên những ninja huyền thoại của riêng bạn. Từ Mười Hai Ninja của Làng Lá, các Jounin, Tam Ninja Huyền Thoại, Ninja của Vùng Đất Cát, và hàng trăm ninja lừng danh khác, cuộc phiêu lưu của bạn sẽ không bao giờ đơn độc!
+
+[Thử thách Sinh tồn, Thống trị Thế giới Ninja]
+Chọn đội hình ninja mạnh nhất, xây dựng đội hình ninja mạnh nhất, kết bạn, thách đấu với các cao thủ và sát cánh chiến đấu để giành phần thưởng hậu hĩnh khi hoàn thành các cấp độ!</div>
+
+    <div class="updated">
+      <span class="lbl">Lần cập nhật gần đây nhất</span><br>
+      13 thg 8, 2025
+    </div>
+
+    <div class="tags">
+      <span class="tag">Nhập vai</span>
+      <span class="tag">Nhàn rỗi nhập vai</span>
+      <span class="tag">Nhiều người chơi</span>
+      <span class="tag">Nhiều người chơi cùng cạnh tranh</span>
+      <span class="tag">Tạo kiểu</span>
+      <span class="tag">Hoạt hình Nhật Bản</span>
+      <span class="tag">Giả tưởng</span>
+      <span class="tag">Giả tưởng phương Đông</span>
+      <span class="tag">Chuyển sinh</span>
+    </div>
+  </section>
+
+  <!-- DATA SAFETY -->
+  <section>
+    <div class="sec-title">An toàn dữ liệu <span class="material-icons">arrow_forward</span></div>
+    <div class="ds-box">
+      <div class="ds-intro">Sự an toàn bắt đầu từ việc nắm được cách nhà phát triển thu thập và chia sẻ dữ liệu của bạn. Các biện pháp bảo vệ quyền riêng tư và bảo mật dữ liệu có thể thay đổi tuỳ theo cách sử dụng, khu vực và độ tuổi. Nhà phát triển đã cung cấp thông tin này và có thể sẽ cập nhật theo thời gian.</div>
+      <div class="ds-item">
+        <span class="material-icons">share</span>
+        <div class="ds-txt">Không chia sẻ dữ liệu với bên thứ ba</div>
+      </div>
+      <div class="ds-item">
+        <span class="material-icons">cloud_upload</span>
+        <div class="ds-txt">Ứng dụng này có thể thu thập những loại dữ liệu sau đây: Thông tin cá nhân, Thông tin tài chính và 3 loại dữ liệu khác</div>
+      </div>
+      <div class="ds-item">
+        <span class="material-icons">lock_open</span>
+        <div class="ds-txt">Dữ liệu không được mã hóa</div>
+      </div>
+      <div class="ds-item">
+        <span class="material-icons">delete_outline</span>
+        <div class="ds-txt">Bạn có thể yêu cầu xóa dữ liệu</div>
+      </div>
+      <a href="#" class="ds-link">Xem chi tiết <span class="material-icons" style="font-size:16px;">arrow_forward</span></a>
+    </div>
+  </section>
+
+  <!-- RATINGS -->
+  <section>
+    <div class="sec-title">Xếp hạng và đánh giá <span class="material-icons" style="font-size:16px;">info_outline</span></div>
+
+    <div class="device-tabs">
+      <div class="dtab active"><span class="material-icons">phone_android</span> Điện thoại</div>
+      <div class="dtab"><span class="material-icons">tablet_android</span> Máy tính bảng</div>
+    </div>
+
+    <div class="rate-grid">
+      <div class="rate-big">
+        <div class="rate-num">3,8</div>
+        <div class="rate-stars">★★★★☆</div>
+        <div class="rate-count">739 bài đánh giá</div>
+      </div>
+      <div class="rate-bars">
+        <div class="bar-row">5 <div class="bar-track"><div class="bar-fill" style="width:62%"></div></div></div>
+        <div class="bar-row">4 <div class="bar-track"><div class="bar-fill" style="width:14%"></div></div></div>
+        <div class="bar-row">3 <div class="bar-track"><div class="bar-fill" style="width:8%"></div></div></div>
+        <div class="bar-row">2 <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div></div>
+        <div class="bar-row">1 <div class="bar-track"><div class="bar-fill" style="width:18%"></div></div></div>
+      </div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="review">
+      <div class="rv-head">
+        <div class="rv-avatar" style="background:#1565c0;">B</div>
+        <div class="rv-name">Bùi Tuấn Anh</div>
+        <span class="material-icons rv-more">more_vert</span>
+      </div>
+      <div class="rv-meta">
+        <span class="rv-stars">★★★★★</span>
+        <span class="rv-date">28 tháng 10, 2025</span>
+      </div>
+      <div class="rv-text">nice</div>
+      <div class="rv-help">3 người thấy bài đánh giá này hữu ích</div>
+      <div class="rv-helpful">
+        <span>Nội dung này có hữu ích cho bạn không?</span>
+        <button>Có</button><button>Không</button>
+      </div>
+    </div>
+
+    <div class="review">
+      <div class="rv-head">
+        <div class="rv-avatar" style="background:#00897b;">D</div>
+        <div class="rv-name">do ai</div>
+        <span class="material-icons rv-more">more_vert</span>
+      </div>
+      <div class="rv-meta">
+        <span class="rv-stars">★★★☆☆</span>
+        <span class="rv-date">14 tháng 5, 2026</span>
+      </div>
+      <div class="rv-text">chơi cũng cuốn những mất acc hoài luôn 😙</div>
+      <div class="rv-helpful">
+        <span>Nội dung này có hữu ích cho bạn không?</span>
+        <button>Có</button><button>Không</button>
+      </div>
+    </div>
+
+    <div class="review">
+      <div class="rv-head">
+        <div class="rv-avatar" style="background:#c62828;">I</div>
+        <div class="rv-name">Infinic In</div>
+        <span class="material-icons rv-more">more_vert</span>
+      </div>
+      <div class="rv-meta">
+        <span class="rv-stars">★★☆☆☆</span>
+        <span class="rv-date">18 tháng 3, 2026</span>
+      </div>
+      <div class="rv-text">game tải rất lâu không nên chơi</div>
+      <div class="rv-help">1 người thấy bài đánh giá này hữu ích</div>
+      <div class="rv-helpful">
+        <span>Nội dung này có hữu ích cho bạn không?</span>
+        <button>Có</button><button>Không</button>
+      </div>
+    </div>
+
+    <a href="#" class="see-all">Xem tất cả bài đánh giá</a>
+  </section>
+
+  <!-- SUPPORT -->
+  <section>
+    <div class="sec-title">Thông tin hỗ trợ về ứng dụng <span class="material-icons">expand_more</span></div>
+    <div class="sup-row">
+      <span class="material-icons">email</span>
+      <div>Email liên hệ hỗ trợ<br><a href="mailto:hazeljenkins1983@gmail.com" style="color:var(--green);">hazeljenkins1983@gmail.com</a></div>
+    </div>
+    <div class="sup-row">
+      <span class="material-icons">shield</span>
+      <div><a href="#" style="color:var(--green);">Chính sách quyền riêng tư</a></div>
+    </div>
+    <div class="dev-info">
+      <b>Giới thiệu về nhà phát triển</b><br>
+      Q REALTOR CON CECILIA LLC<br>
+      talin@qrealtor.sbs<br>
+      4821 W Milada Dr<br>
+      Laveen, AZ 85339-4216<br>
+      United States<br>
+      +1 864-780-6742
+    </div>
+  </section>
+
+  <!-- SIMILAR -->
+  <section>
+    <div class="sec-title">Trò chơi tương tự <span class="material-icons">arrow_forward</span></div>
+    <div class="sim-grid">
+      <div class="sim-card">
+        <img src="https://play-lh.googleusercontent.com/XD77_IemQd1PlFw65jTx_eDHuUiRnkjGfEUb-9l3RmbNNvJ9xdebeHntamE9bGeHEjgfdTmKhrsnp3zCPpJd=w300-h300" alt="">
+        <div class="sim-name">Manga Battle: Tiny Hero</div>
+        <div class="sim-dev">Scott Lorrie</div>
+      </div>
+      <div class="sim-card">
+        <img src="https://play-lh.googleusercontent.com/0n7uf25qJz9EK-PfxqDwpWrLPZLG3-XLN5nO_g_XUvJcuWgmUIzyYmg-gRlFleIuGwqY7Ragf5vPK1NBdnnCNOw=w300-h300" alt="">
+        <div class="sim-name">Shinigami Adventure</div>
+        <div class="sim-dev">VLD Apps</div>
+        <div class="sim-rate">4,6 <span class="material-icons">star</span></div>
+      </div>
+      <div class="sim-card">
+        <img src="https://play-lh.googleusercontent.com/6nmORd8Uj6lJhFhFVTxCV9SrHN0PYI72Ke0oznqPYLG6AeptcN_YyE6N7nV2jQedj5ToBgdLM4ogw9Ae8k4R7g=w300-h300" alt="">
+        <div class="sim-name">Clash Survival: Last War SLG</div>
+        <div class="sim-dev">Soul Games Studio</div>
+        <div class="sim-rate">4,6 <span class="material-icons">star</span></div>
+      </div>
+      <div class="sim-card">
+        <img src="https://play-lh.googleusercontent.com/LHXtnkJgQZu8bKEUW6Wv5TlgboZ-lOYFhhr6esU65nQtehqQ3_35mYLM_h-QYpztP7t1Hy0UgWoIMt05GQQJyg=w300-h300" alt="">
+        <div class="sim-name">Sailing Legends</div>
+        <div class="sim-dev">RIZQI DEVELOPER</div>
+      </div>
+      <div class="sim-card">
+        <img src="https://play-lh.googleusercontent.com/e4GnYMZoumOQCIty5q5Mmxjf2_t3XoVWDuMa51k14MEMAjBPpO17U-qzumApVtO3NOTkLm9grsTkCY_fTO72=w300-h300" alt="">
+        <div class="sim-name">Manga Mayhem: Unity</div>
+        <div class="sim-dev">Shan Ahmad Baig</div>
+      </div>
+      <div class="sim-card">
+        <img src="https://play-lh.googleusercontent.com/fIWa9zPDaB5w-1HwVyeh7Y8jl0DoDyeqBsAFlPEpKrYqox0E_Rc62i1YTlKqXI65fZ-lCV-wNsaoTEFSpErs_jA=w300-h300" alt="">
+        <div class="sim-name">Pirate Wano War</div>
+        <div class="sim-dev">DAI DAI LING</div>
+        <div class="sim-rate">3,8 <span class="material-icons">star</span></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-col">
+      <h4>Google Play</h4>
+      <a href="#">Play Pass</a>
+      <a href="#">Điểm Play</a>
+      <a href="#">Thẻ Google Play</a>
+      <a href="#">Đổi phần thưởng</a>
+      <a href="#">Chính sách hoàn tiền</a>
+    </div>
+    <div class="foot-col">
+      <h4>Trẻ em và gia đình</h4>
+      <a href="#">Hướng dẫn dành cho cha mẹ</a>
+      <a href="#">Chia sẻ với gia đình</a>
+    </div>
+    <div class="foot-col">
+      <h4>&nbsp;</h4>
+      <a href="#">Điều khoản dịch vụ</a>
+      <a href="#">Quyền riêng tư</a>
+      <a href="#">Giới thiệu về Google Play</a>
+      <a href="#">Nhà phát triển</a>
+      <a href="#">Google Store</a>
+    </div>
+  </div>
+  <div class="foot-bottom">Vùng không xác định (Tiếng Việt)</div>
+</footer>
+
+<script>
+  document.querySelector('.btn-install').addEventListener('click',function(){
+    this.textContent='Đang cài đặt...';
+    setTimeout(()=>{ this.textContent='Đã cài đặt'; this.style.background='#5f6368'; },1500);
+  });
+  document.querySelectorAll('.dtab').forEach(t=>{
+    t.addEventListener('click',()=>{
+      document.querySelectorAll('.dtab').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
