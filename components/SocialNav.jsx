@@ -16,7 +16,7 @@ export default function SocialNav() {
         title="Facebook"
         target="_blank"
         rel="noreferrer"
-        href="https://www.facebook.com/Nhangiatoithuong"
+        href="https://www.facebook.com/ShinobiInfinityWar"
       >
         <img src="/social/icon-fanpage.webp" alt="facebook" width={35} height={35} className={hv} />
       </a>
@@ -25,7 +25,7 @@ export default function SocialNav() {
         title="Facebook Group"
         target="_blank"
         rel="noreferrer"
-        href="https://www.facebook.com/groups/nhangiatoithuong"
+        href="https://www.facebook.com/ShinobiInfinityWar"
       >
         <img src="/social/icon-group.webp" alt="facebook group" width={35} height={35} className={hv} />
       </a>

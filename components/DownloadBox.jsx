@@ -31,7 +31,7 @@ export default function DownloadBox() {
         >
           <img
             src="/app-icon.jpg"
-            alt="Nhan Gia Toi Thuong - Reviving the legendary Six Paths 2026"
+            alt="Shinobi Infinity War - Reviving the legendary Six Paths 2026"
             width={112}
             height={112}
             className="size-[72px] rounded-[10px] sm:size-[100px] lg:size-[118px]"

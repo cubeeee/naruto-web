@@ -1,7 +1,7 @@
 import ChangePasswordClient from "@/components/ChangePasswordClient";
 
 export const metadata = {
-  title: "Change Password - Nhan Gia Toi Thuong",
+  title: "Change Password - Shinobi Infinity War",
   description: "Change the web and game login password for your account.",
 };
 

@@ -2,12 +2,12 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 
 export const metadata = {
-  title: "Nhan Gia Toi Thuong, Get Giftcodes, Play Now",
+  title: "Shinobi Infinity War, Get Giftcodes, Play Now",
   description:
-    "Download Nhan Gia Toi Thuong - Reviving the legendary Six Paths 2026. Free VIP6 and 8 mighty SSS heroes.",
+    "Download Shinobi Infinity War - Reviving the legendary Six Paths 2026. Free VIP6 and 8 mighty SSS heroes.",
   keywords: ["game", "online game", "ninja", "naruto", "giftcode"],
   openGraph: {
-    title: "Nhan Gia Toi Thuong, Get Giftcodes, Play Now",
+    title: "Shinobi Infinity War, Get Giftcodes, Play Now",
     description: "Reviving the legendary Six Paths 2026 - Get VIP6 and 8 SSS heroes.",
     type: "website",
   },

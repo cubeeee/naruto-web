@@ -8,7 +8,7 @@ export default function Footer() {
           <div>
             <Logo />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-ninja-gold/55">
-              Nhan Gia Toi Thuong — Reviving the legendary Six Paths 2026. A
+              Shinobi Infinity War — Reviving the legendary Six Paths 2026. A
               ninja-inspired strategy RPG: collect SSS heroes and conquer the
               Three Realms.
             </p>
@@ -22,8 +22,8 @@ export default function Footer() {
               {[
                 { label: "Home", href: "/" },
                 { label: "Account", href: "/account" },
-                { label: "Fanpage", href: "https://www.facebook.com/Nhangiatoithuong", external: true },
-                { label: "FB Group", href: "https://www.facebook.com/groups/nhangiatoithuong", external: true },
+                { label: "Fanpage", href: "https://www.facebook.com/ShinobiInfinityWar", external: true },
+                { label: "FB Group", href: "https://www.facebook.com/ShinobiInfinityWar", external: true },
                 { label: "Terms", href: "#" },
               ].map((x) => (
                 <li key={x.label}>
@@ -54,7 +54,7 @@ export default function Footer() {
 
         <div className="mt-10 flex flex-col items-center gap-4 border-t border-white/5 pt-6 text-center md:flex-row md:justify-between md:text-left">
           <p className="text-xs text-ninja-gold/40">
-            © 2026 Nhan Gia Toi Thuong. Interface clone for educational purposes.
+            © 2026 Shinobi Infinity War. Interface clone for educational purposes.
           </p>
           <div className="flex items-center gap-3">
             <span className="grid h-10 w-10 place-items-center rounded-full border-2 border-ninja-ember font-display text-sm font-extrabold text-ninja-ember">

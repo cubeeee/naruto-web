@@ -1,9 +1,9 @@
 import AccountForm from "@/components/AccountForm";
 
 export const metadata = {
-  title: "Login / Register - Nhan Gia Toi Thuong",
+  title: "Login / Register - Shinobi Infinity War",
   description:
-    "Log in or register a Nhan Gia Toi Thuong account using your game account.",
+    "Log in or register a Shinobi Infinity War account using your game account.",
 };
 
 export default function AccountPage() {
