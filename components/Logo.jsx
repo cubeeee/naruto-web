@@ -4,7 +4,7 @@ export default function Logo({ className = "" }) {
     <div className={`flex items-center ${className}`}>
       <img
         src="/logo.png"
-        alt="Nhẫn Giả Tối Thượng"
+        alt="Nhan Gia Toi Thuong"
         className="mt-3 h-[72px] w-auto object-contain drop-shadow-[0_0_10px_rgba(255,122,24,0.75)] md:mt-6 md:h-[92px]"
       />
     </div>

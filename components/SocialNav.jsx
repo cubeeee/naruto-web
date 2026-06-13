@@ -29,7 +29,7 @@ export default function SocialNav() {
       >
         <img src="/social/icon-group.webp" alt="facebook group" width={35} height={35} className={hv} />
       </a>
-      <span className="mb-4" title="Kênh Youtube chưa có">
+      <span className="mb-4" title="Youtube (coming soon)">
         <img
           src="/social/icon-youtube.webp"
           alt="youtube"
@@ -38,7 +38,7 @@ export default function SocialNav() {
           className="opacity-60 grayscale"
         />
       </span>
-      <span className="mb-4" title="Kênh Tiktok chưa có">
+      <span className="mb-4" title="Tiktok (coming soon)">
         <img
           src="/social/icon-tiktok.webp"
           alt="tiktok"
@@ -50,14 +50,14 @@ export default function SocialNav() {
 
       <div className="my-6 h-px w-8 bg-ninja-gold/30 transition-colors duration-300 group-hover/social:bg-ninja-orange/70" />
 
-      <button className="mb-4" title="Hỗ trợ" type="button">
+      <button className="mb-4" title="Support" type="button">
         <img src="/social/icon-support.webp" alt="support" width={35} height={35} className={hv} />
       </button>
 
       <div className="relative mb-4">
-        <img src="/social/flag.webp" alt="Ngôn ngữ" width={35} height={35} className={hv} />
+        <img src="/social/flag.webp" alt="Language" width={35} height={35} className={hv} />
         <span className="absolute bottom-[-2px] right-[-2px] flex size-3 items-center justify-center rounded-md bg-white text-[8px]">
-          🇻🇳
+          🇬🇧
         </span>
       </div>
     </div>

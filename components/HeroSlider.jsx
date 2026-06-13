@@ -33,7 +33,7 @@ export default function HeroSlider() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent,rgba(0,0,0,0.7))]" />
             <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
               <p className="font-display text-xs font-bold uppercase tracking-[0.4em] text-ninja-gold">
-                Nhẫn Giả Tối Thượng
+                Nhan Gia Toi Thuong
               </p>
               <h2 className="mt-2 font-display text-2xl font-extrabold uppercase text-white drop-shadow-lg md:text-5xl">
                 {s.title}

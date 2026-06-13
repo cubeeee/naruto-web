@@ -31,22 +31,22 @@ export default function DownloadBox() {
         >
           <img
             src="/app-icon.jpg"
-            alt="Nhẫn Giả Tối Thượng - Tái hiện Lục Đạo huyền thoại 2026"
+            alt="Nhan Gia Toi Thuong - Reviving the legendary Six Paths 2026"
             width={112}
             height={112}
             className="size-[72px] rounded-[10px] sm:size-[100px] lg:size-[118px]"
           />
         </a>
 
-        {/* Nạp thẻ (mobile hiển thị ở hàng trên, sm chuyển sang phải) */}
+        {/* Top Up (mobile hiển thị ở hàng trên, sm chuyển sang phải) */}
         <a
-          href="#"
-          title="Nạp thẻ"
+          href="/recharge"
+          title="Top Up"
           className="order-3 shrink-0 hover:animate-bright2"
         >
           <img
             src="/payment-dl.png"
-            alt="Nạp thẻ"
+            alt="Top Up"
             width={112}
             height={112}
             className="size-[72px] sm:size-[100px] lg:size-[118px]"

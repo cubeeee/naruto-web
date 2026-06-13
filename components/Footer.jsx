@@ -8,21 +8,32 @@ export default function Footer() {
           <div>
             <Logo />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-ninja-gold/55">
-              Nhẫn Giả Tối Thượng — Tái hiện Lục Đạo huyền thoại 2026. Game nhập
-              vai chiến thuật lấy cảm hứng nhẫn giả, sưu tầm tướng SSS và chinh
-              phục Tam Giới.
+              Nhan Gia Toi Thuong — Reviving the legendary Six Paths 2026. A
+              ninja-inspired strategy RPG: collect SSS heroes and conquer the
+              Three Realms.
             </p>
           </div>
 
           <div>
             <h4 className="font-display text-sm font-bold uppercase tracking-widest text-ninja-gold">
-              Liên kết
+              Links
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-ninja-gold/55">
-              {["Trang chủ", "Tài khoản", "Fanpage", "Group FB", "Điều khoản"].map((x) => (
-                <li key={x}>
-                  <a href="#" className="transition hover:text-ninja-orange">
-                    {x}
+              {[
+                { label: "Home", href: "/" },
+                { label: "Account", href: "/account" },
+                { label: "Fanpage", href: "https://www.facebook.com/Nhangiatoithuong", external: true },
+                { label: "FB Group", href: "https://www.facebook.com/groups/nhangiatoithuong", external: true },
+                { label: "Terms", href: "#" },
+              ].map((x) => (
+                <li key={x.label}>
+                  <a
+                    href={x.href}
+                    target={x.external ? "_blank" : undefined}
+                    rel={x.external ? "noreferrer" : undefined}
+                    className="transition hover:text-ninja-orange"
+                  >
+                    {x.label}
                   </a>
                 </li>
               ))}
@@ -31,26 +42,26 @@ export default function Footer() {
 
           <div>
             <h4 className="font-display text-sm font-bold uppercase tracking-widest text-ninja-gold">
-              Hỗ trợ
+              Support
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-ninja-gold/55">
               <li>Hotline: 1900 xxxx</li>
-              <li>Email: cskh@nhangia.example</li>
-              <li>Giờ làm việc: 8h - 22h</li>
+              <li>Email: support@nhangia.example</li>
+              <li>Working hours: 8am - 10pm</li>
             </ul>
           </div>
         </div>
 
         <div className="mt-10 flex flex-col items-center gap-4 border-t border-white/5 pt-6 text-center md:flex-row md:justify-between md:text-left">
           <p className="text-xs text-ninja-gold/40">
-            © 2026 Nhẫn Giả Tối Thượng. Bản clone giao diện cho mục đích học tập.
+            © 2026 Nhan Gia Toi Thuong. Interface clone for educational purposes.
           </p>
           <div className="flex items-center gap-3">
             <span className="grid h-10 w-10 place-items-center rounded-full border-2 border-ninja-ember font-display text-sm font-extrabold text-ninja-ember">
               18+
             </span>
             <span className="text-xs text-ninja-gold/40">
-              Chơi quá 180 phút mỗi ngày sẽ ảnh hưởng xấu đến sức khỏe.
+              Playing more than 180 minutes a day is harmful to your health.
             </span>
           </div>
         </div>

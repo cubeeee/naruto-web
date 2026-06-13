@@ -30,6 +30,8 @@ export default function Header() {
             <a
               key={l.label}
               href={l.href}
+              target={l.external ? "_blank" : undefined}
+              rel={l.external ? "noreferrer" : undefined}
               className="group relative px-6 py-2 font-display text-sm font-bold uppercase tracking-wider text-ninja-gold/90 transition hover:text-ninja-gold"
             >
               {l.label}
@@ -40,11 +42,11 @@ export default function Header() {
 
         {/* CTA desktop */}
         <div className="hidden items-center gap-3 lg:flex">
-          <a href="#download" className="btn-outline">
-            Giftcode
+          <a href="/account" className="btn-outline">
+            Login
           </a>
-          <a href="#download" className="btn-ninja">
-            Nạp thẻ
+          <a href="/recharge" className="btn-ninja">
+            Top Up
           </a>
         </div>
 
@@ -71,6 +73,8 @@ export default function Header() {
             <a
               key={l.label}
               href={l.href}
+              target={l.external ? "_blank" : undefined}
+              rel={l.external ? "noreferrer" : undefined}
               onClick={() => setOpen(false)}
               className="border-b border-white/5 py-3 font-display text-sm font-bold uppercase tracking-wider text-ninja-gold/90"
             >
@@ -78,11 +82,11 @@ export default function Header() {
             </a>
           ))}
           <div className="mt-4 flex gap-3">
-            <a href="#download" className="btn-outline flex-1" onClick={() => setOpen(false)}>
-              Giftcode
+            <a href="/account" className="btn-outline flex-1" onClick={() => setOpen(false)}>
+              Login
             </a>
-            <a href="#download" className="btn-ninja flex-1" onClick={() => setOpen(false)}>
-              Nạp thẻ
+            <a href="/recharge" className="btn-ninja flex-1" onClick={() => setOpen(false)}>
+              Top Up
             </a>
           </div>
         </nav>

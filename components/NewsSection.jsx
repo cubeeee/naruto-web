@@ -13,7 +13,7 @@ export default function NewsSection() {
         <Reveal variant="pop">
           <img
             src="/new.png"
-            alt="Bản Tin"
+            alt="News"
             className="mx-auto -mb-10 w-[460px] max-w-full object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] md:-mb-20 md:w-[760px]"
           />
         </Reveal>

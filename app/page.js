@@ -36,7 +36,7 @@ export default function Home() {
               >
                 <img
                   src="/logo.png"
-                  alt="Nhẫn Giả Tối Thượng - Tái hiện Lục Đạo huyền thoại 2026"
+                  alt="Nhan Gia Toi Thuong - Reviving the legendary Six Paths 2026"
                   className="h-auto w-full object-contain drop-shadow-[0_0_40px_rgba(255,122,24,0.55)]"
                 />
               </a>

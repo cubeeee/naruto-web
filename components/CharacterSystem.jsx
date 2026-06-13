@@ -107,7 +107,7 @@ export default function CharacterSystem() {
           <span className="absolute left-6 text-ninja-gold/60">◈◈</span>
           <span className="absolute right-6 text-ninja-gold/60">◈◈</span>
           <h2 className="relative font-display text-2xl font-extrabold uppercase tracking-[0.25em] text-transparent bg-clip-text bg-gradient-to-b from-ninja-gold to-ninja-orange md:text-3xl">
-            Hệ Thống Nhẫn Giả
+            Ninja Roster
           </h2>
         </div>
       </Reveal>
@@ -116,7 +116,7 @@ export default function CharacterSystem() {
         {/* ===== Cột avatar dọc ===== */}
         <div className="flex shrink-0 items-center gap-3 lg:flex-col">
           <button
-            aria-label="Trước"
+            aria-label="Prev"
             onClick={() => move(-1)}
             className="grid h-9 w-9 place-items-center rounded-full border border-ninja-gold/40 text-ninja-gold transition hover:bg-ninja-orange hover:text-black max-lg:rotate-90"
           >
@@ -154,7 +154,7 @@ export default function CharacterSystem() {
           </div>
 
           <button
-            aria-label="Sau"
+            aria-label="Next"
             onClick={() => move(1)}
             className="grid h-9 w-9 place-items-center rounded-full border border-ninja-gold/40 text-ninja-gold transition hover:bg-ninja-orange hover:text-black max-lg:rotate-90"
           >
@@ -186,7 +186,7 @@ export default function CharacterSystem() {
               />
             </span>
             <span className="rounded border border-ninja-gold/40 px-2 py-1 text-xs font-bold uppercase tracking-widest text-ninja-gold">
-              Hệ {c.element}
+              {c.element} Element
             </span>
           </div>
 
@@ -202,8 +202,8 @@ export default function CharacterSystem() {
           <CharImg
             key={`${c.id}-sk`}
             src={c.skillIcon}
-            alt={`Kỹ năng ${c.name}`}
-            fallback="Kỹ năng"
+            alt={`${c.name} skill`}
+            fallback="Skill"
             className="mt-6 w-full max-w-[360px] object-contain"
           />
         </div>

@@ -12,19 +12,19 @@ export default function FloatingPromo() {
       <div className="panel relative overflow-hidden p-3 text-center shadow-glow">
         <button
           onClick={() => setHide(true)}
-          aria-label="Đóng"
+          aria-label="Close"
           className="absolute right-1 top-1 grid h-5 w-5 place-items-center rounded-full bg-black/60 text-xs text-ninja-gold"
         >
           ✕
         </button>
         <p className="font-display text-[11px] font-bold uppercase tracking-widest text-ninja-gold">
-          Quà Tân Thủ
+          Newcomer Gift
         </p>
         <div className="mx-auto my-2 grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-ninja-orange to-ninja-blood text-2xl">
           🎁
         </div>
         <a href="#download" className="block rounded bg-ninja-orange py-1 font-display text-[11px] font-bold uppercase text-black">
-          Nhận ngay
+          Claim Now
         </a>
       </div>
     </div>

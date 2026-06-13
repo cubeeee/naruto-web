@@ -37,7 +37,7 @@ export default function NewsPanel() {
   const timer = useRef(null);
 
   const list = useMemo(
-    () => (tab === "Tất cả" ? POSTS : POSTS.filter((p) => p.cat === tab)),
+    () => (tab === "All" ? POSTS : POSTS.filter((p) => p.cat === tab)),
     [tab]
   );
 
@@ -226,7 +226,7 @@ export default function NewsPanel() {
           ))}
           {list.length === 0 && (
             <li className="py-10 text-center text-ninja-gold/40">
-              Chưa có bài viết.
+              No articles yet.
             </li>
           )}
         </ul>
