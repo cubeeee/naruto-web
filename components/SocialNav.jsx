@@ -53,13 +53,6 @@ export default function SocialNav() {
       <button className="mb-4" title="Support" type="button">
         <img src="/social/icon-support.webp" alt="support" width={35} height={35} className={hv} />
       </button>
-
-      <div className="relative mb-4">
-        <img src="/social/flag.webp" alt="Language" width={35} height={35} className={hv} />
-        <span className="absolute bottom-[-2px] right-[-2px] flex size-3 items-center justify-center rounded-md bg-white text-[8px]">
-          🇬🇧
-        </span>
-      </div>
     </div>
   );
 }
