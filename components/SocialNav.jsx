@@ -47,6 +47,15 @@ export default function SocialNav() {
           className="opacity-60 grayscale"
         />
       </span>
+      <a
+        className="mb-4"
+        title="Discord"
+        target="_blank"
+        rel="noreferrer"
+        href="https://discord.gg/PreE9R3p7F"
+      >
+        <img src="/social/icon-discord.svg" alt="discord" width={35} height={35} className={hv} />
+      </a>
 
       <div className="my-6 h-px w-8 bg-ninja-gold/30 transition-colors duration-300 group-hover/social:bg-ninja-orange/70" />
 
