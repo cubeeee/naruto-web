@@ -45,7 +45,17 @@ export default function Footer() {
               Support
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-ninja-gold/55">
-              <li>Hotline: 1900 xxxx</li>
+              <li>
+                Discord:{" "}
+                <a
+                  href="https://discord.gg/PreE9R3p7F"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-ninja-orange transition hover:text-ninja-gold"
+                >
+                  Join our server
+                </a>
+              </li>
               <li>Email: support@nhangia.example</li>
               <li>Working hours: 8am - 10pm</li>
             </ul>

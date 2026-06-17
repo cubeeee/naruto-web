@@ -50,9 +50,15 @@ export default function SocialNav() {
 
       <div className="my-6 h-px w-8 bg-ninja-gold/30 transition-colors duration-300 group-hover/social:bg-ninja-orange/70" />
 
-      <button className="mb-4" title="Support" type="button">
+      <a
+        className="mb-4"
+        title="Support (Discord)"
+        target="_blank"
+        rel="noreferrer"
+        href="https://discord.gg/PreE9R3p7F"
+      >
         <img src="/social/icon-support.webp" alt="support" width={35} height={35} className={hv} />
-      </button>
+      </a>
     </div>
   );
 }

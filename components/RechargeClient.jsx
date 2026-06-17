@@ -274,6 +274,14 @@ export default function RechargeClient() {
             >
               Shinobi Infinity War
             </a>{" "}
+            or join our{" "}
+            <a
+              href="https://discord.gg/PreE9R3p7F"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Discord
+            </a>{" "}
             for support.
           </p>
         </div>
