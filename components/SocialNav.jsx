@@ -38,15 +38,15 @@ export default function SocialNav() {
           className="opacity-60 grayscale"
         />
       </span>
-      <span className="mb-4" title="Tiktok (coming soon)">
-        <img
-          src="/social/icon-tiktok.webp"
-          alt="tiktok"
-          width={35}
-          height={35}
-          className="opacity-60 grayscale"
-        />
-      </span>
+      <a
+        className="mb-4"
+        title="Tiktok"
+        target="_blank"
+        rel="noreferrer"
+        href="https://www.tiktok.com/@shinobiinfinitywar"
+      >
+        <img src="/social/icon-tiktok.webp" alt="tiktok" width={35} height={35} className={hv} />
+      </a>
       <a
         className="mb-4"
         title="Discord"

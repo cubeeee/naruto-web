@@ -24,6 +24,7 @@ export default function Footer() {
                 { label: "Account", href: "/account" },
                 { label: "Fanpage", href: "https://www.facebook.com/ShinobiInfinityWar", external: true },
                 { label: "FB Group", href: "https://www.facebook.com/ShinobiInfinityWar", external: true },
+                { label: "TikTok", href: "https://www.tiktok.com/@shinobiinfinitywar", external: true },
                 { label: "Terms", href: "#" },
               ].map((x) => (
                 <li key={x.label}>
@@ -56,7 +57,15 @@ export default function Footer() {
                   Join our server
                 </a>
               </li>
-              <li>Email: support@nhangia.example</li>
+              <li>
+                Email:{" "}
+                <a
+                  href="mailto:shinobigame102@gmail.com"
+                  className="text-ninja-orange transition hover:text-ninja-gold"
+                >
+                  shinobigame102@gmail.com
+                </a>
+              </li>
               <li>Working hours: 8am - 10pm</li>
             </ul>
           </div>
