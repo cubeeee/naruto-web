@@ -7,8 +7,8 @@ const BUTTONS = [
   { src: "/ios-dl.webp", alt: "Download IOS", href: "/ios", active: true },
   { src: "/android-dl.webp", alt: "Download Android", href: "/android", active: true },
   { src: "/h5-dl.webp", alt: "Download H5", active: false },
-  { src: "/apk-dl.webp", alt: "Download APK", active: false },
-  { src: "/pc-dl.webp", alt: "Download PC", active: false },
+  { src: "/apk-dl.webp", alt: "Download APK", href: "https://drive.google.com/file/d/1LdvrEGtStAvYJNXpN0NkQFFFPLoUiTNi/view?usp=drive_link", active: true },
+  { src: "/pc-dl.webp", alt: "Download PC", href: "https://drive.google.com/file/d/1LdvrEGtStAvYJNXpN0NkQFFFPLoUiTNi/view?usp=drive_link", active: true },
   { src: "/gc-dl.webp", alt: "Giftcode", active: true, button: true },
 ];
 
