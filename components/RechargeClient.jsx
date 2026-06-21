@@ -141,6 +141,9 @@ function WiseTransferPanel({ usd, charName }) {
         with your character name{charName ? ` (${charName})` : ""} and the transfer receipt to
         receive your tickets.
       </p>
+      <p className="ninja-message is-info" style={{ marginTop: 4 }}>
+        (If you have a bank account in Vietnam, you can transfer directly to this BIDV account.)
+      </p>
     </div>
   );
 }
