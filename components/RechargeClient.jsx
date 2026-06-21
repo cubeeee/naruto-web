@@ -30,7 +30,7 @@ const METHODS = [
 const WISE_INFO = [
   { label: "Currency", value: "VND" },
   { label: "Beneficiary Name", value: "NGUYEN ANH TU" },
-  { label: "Bank Name", value: "Bank for Investment and Development of Vietnam" },
+  { label: "Bank Name", value: "Bank for Investment and Development of Vietnam (BIDV)" },
   { label: "SWIFT Code", value: "BIDVVNVX" },
   { label: "Account Number", value: "8890576388" },
   { label: "Postcode", value: "700000" },
