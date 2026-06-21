@@ -496,6 +496,35 @@ body {
 .rc-order-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
 .rc-order-actions .ninja-submit { min-width: 140px; text-decoration: none; }
 
+/* ===== payment method / history tabs ===== */
+.rc-method-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.rc-method-tab {
+  flex: 1 1 auto; min-width: 140px; padding: 10px 14px; cursor: pointer;
+  border: 1px solid rgba(246, 215, 122, 0.3); border-radius: 6px;
+  background: rgba(0, 0, 0, 0.32); color: #d8d2c2; font-weight: 700;
+  transition: all 0.15s ease;
+}
+.rc-method-tab:hover { border-color: rgba(255, 223, 117, 0.7); }
+.rc-method-tab.is-active {
+  border-color: #f6d77a; color: #fff2a7;
+  background: linear-gradient(180deg, rgba(240, 161, 42, 0.28), rgba(197, 38, 30, 0.22));
+  box-shadow: 0 0 0 1px #f6d77a inset;
+}
+
+/* ===== Pay2s bank transfer panel (VietQR) ===== */
+.rc-bank { display: grid; gap: 10px; margin-top: 4px; }
+.rc-bank-qr { display: grid; justify-items: center; gap: 6px; }
+.rc-bank-qr img {
+  width: 220px; height: 220px; object-fit: contain; background: #fff;
+  padding: 8px; border-radius: 8px; border: 1px solid rgba(246, 215, 122, 0.4);
+}
+.rc-bank-qr-hint { color: #bdb5a2; font-size: 12px; }
+.rc-bank-info { display: grid; gap: 8px; }
+.rc-bank-memo { color: #fff2a7; letter-spacing: 0.5px; }
+
+/* ===== PayPal Smart Buttons ===== */
+.rc-paypal-buttons { min-height: 50px; margin-top: 4px; }
+
 /* ===== /recharge: ghi chú hỗ trợ (NỔI BẬT — phát sáng nhấp nháy) ===== */
 @keyframes rcGlow {
   0%, 100% {

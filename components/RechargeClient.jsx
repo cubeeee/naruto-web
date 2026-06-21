@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAccount, selectIdentifier, selectRehydrated } from "@/lib/authSlice";
+import PayPalCheckout from "@/components/PayPalCheckout";
 
 // Ticket price table: 1 USD = 1 ticket.
 const AMOUNTS = [1, 5, 10, 25, 50, 75, 100, 500];
@@ -16,6 +17,27 @@ const STATUS = {
   failed: { label: "Failed", cls: "is-danger" },
   underpaid: { label: "Underpaid", cls: "is-pending" },
 };
+
+// Phương thức nạp. Pay2s (bank) và PayPal tạm ẩn — bỏ comment dòng tương ứng để bật lại.
+const METHODS = [
+  // { key: "bank", label: "Bank Transfer (Pay2s)" },
+  // { key: "paypal", label: "PayPal" },
+  { key: "wise", label: "Wise / Remitly" },
+  { key: "crypto", label: "Crypto / Binance" },
+];
+
+// Thông tin nhận tiền Wise/Remitly (chuyển khoản VND thủ công, không qua cổng tự động).
+const WISE_INFO = [
+  { label: "Currency", value: "VND" },
+  { label: "Beneficiary Name", value: "NGUYEN ANH TU" },
+  { label: "Bank Name", value: "Bank for Investment and Development of Vietnam" },
+  { label: "SWIFT Code", value: "BIDVVNVX" },
+  { label: "Account Number", value: "8890576388" },
+  { label: "Postcode", value: "700000" },
+  { label: "City", value: "Ho Chi Minh City" },
+  { label: "Address", value: "Quan 1, Ho Chi Minh" },
+  { label: "Country", value: "Viet Nam" },
+];
 
 const firstLetter = (s) => {
   const t = (s || "").trim();
@@ -53,6 +75,76 @@ function CharRow({ r }) {
   );
 }
 
+// Panel hiển thị VietQR + thông tin chuyển khoản cho đơn Pay2s đang chờ.
+function BankTransferPanel({ order }) {
+  const bank = order.bank || {};
+  const vnd = Number(order.vnd_amount || 0).toLocaleString("en-US");
+  return (
+    <div className="rc-bank">
+      {order.vietqr_url && (
+        <div className="rc-bank-qr">
+          <img src={order.vietqr_url} alt="VietQR" />
+          <span className="rc-bank-qr-hint">Scan with your banking app</span>
+        </div>
+      )}
+      <div className="rc-bank-info">
+        <div className="rc-order-row">
+          <span>Bank</span>
+          <strong>{bank.name || "-"}</strong>
+        </div>
+        <div className="rc-order-row">
+          <span>Account no.</span>
+          <strong>{bank.account || "-"}</strong>
+        </div>
+        <div className="rc-order-row">
+          <span>Account holder</span>
+          <strong>{bank.holder || "-"}</strong>
+        </div>
+        <div className="rc-order-row">
+          <span>Amount</span>
+          <strong>{vnd} VND</strong>
+        </div>
+        <div className="rc-order-row">
+          <span>Transfer note</span>
+          <strong className="rc-bank-memo">{order.note || order.order_id}</strong>
+        </div>
+      </div>
+      <p className="ninja-message is-error" style={{ marginTop: 4 }}>
+        ⚠ The transfer note <strong>{order.note || order.order_id}</strong> must be kept exactly,
+        and the amount must match. Tickets are credited automatically after the bank confirms.
+      </p>
+    </div>
+  );
+}
+
+// Panel thông tin nhận tiền Wise/Remitly — người dùng chuyển VND thủ công rồi liên hệ support.
+function WiseTransferPanel({ usd, charName }) {
+  return (
+    <div className="rc-bank">
+      <div className="rc-bank-info">
+        {WISE_INFO.map((f) => (
+          <div className="rc-order-row" key={f.label}>
+            <span>{f.label}</span>
+            <strong className={f.label === "Account Number" || f.label === "SWIFT Code" ? "rc-bank-memo" : undefined}>
+              {f.value}
+            </strong>
+          </div>
+        ))}
+      </div>
+      <p className="ninja-message is-info" style={{ marginTop: 4 }}>
+        Transfer the equivalent of <strong>${usd}</strong> (1 ticket = 1 USD) in VND via{" "}
+        <strong>Wise</strong> or <strong>Remitly</strong> to the account above. After paying,
+        message our{" "}
+        <a href="https://discord.gg/PreE9R3p7F" target="_blank" rel="noreferrer">Discord</a>{" "}
+        or{" "}
+        <a href="https://www.facebook.com/ShinobiInfinityWar" target="_blank" rel="noreferrer">Fanpage</a>{" "}
+        with your character name{charName ? ` (${charName})` : ""} and the transfer receipt to
+        receive your tickets.
+      </p>
+    </div>
+  );
+}
+
 export default function RechargeClient() {
   const account = useSelector(selectAccount);
   const identifier = useSelector(selectIdentifier);
@@ -61,6 +153,7 @@ export default function RechargeClient() {
   const [roles, setRoles] = useState([]);
   const [msg, setMsg] = useState(null); // { type, text }
   const [loading, setLoading] = useState(true);
+  const [method, setMethod] = useState("wise"); // 'wise' | 'crypto' (paypal/bank tạm ẩn)
   const [role, setRole] = useState(""); // role_id
   const [tickets, setTickets] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -170,6 +263,8 @@ export default function RechargeClient() {
     }
     if (saved && saved.order_id) {
       setOrder(saved);
+      // Chỉ chuyển sang tab của đơn cũ nếu method đó còn hiển thị (Pay2s đã ẩn).
+      if (saved.method && METHODS.some((m) => m.key === saved.method)) setMethod(saved.method);
       if (saved.status === "pending") startPolling(saved.order_id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -181,6 +276,8 @@ export default function RechargeClient() {
   async function handleSubmit(e) {
     e.preventDefault();
     if (busy) return;
+    // Wise/Remitly (thủ công) và PayPal (Smart Buttons) không tạo đơn qua submit này.
+    if (method === "wise" || method === "paypal") return;
     setMsg(null);
 
     if (!role) {
@@ -192,9 +289,10 @@ export default function RechargeClient() {
       return;
     }
 
+    const endpoint = method === "bank" ? "/api/auth/deposit-bank" : "/api/auth/deposit-crypto";
     setBusy(true);
     try {
-      const res = await fetch("/api/auth/deposit-crypto", {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -204,16 +302,28 @@ export default function RechargeClient() {
         }),
       });
       const data = await res.json().catch(() => ({}));
-      if (res.ok && data.ok && data.payment_url) {
+
+      // Crypto trả payment_url (redirect); Pay2s trả vietqr_url + bank (hiển thị tại chỗ).
+      const okCrypto = method === "crypto" && data.payment_url;
+      const okBank = method === "bank" && data.order_id;
+      if (res.ok && data.ok && (okCrypto || okBank)) {
         const newOrder = {
+          method,
           order_id: data.order_id,
           tickets: data.tickets ?? Number(tickets),
           amount: Number(tickets),
           server: selected?.server || "",
           name: selected?.name || "",
           logo: selected?.logo,
-          payment_url: data.payment_url,
           status: "pending",
+          // crypto
+          payment_url: data.payment_url || null,
+          // bank / pay2s
+          bank: data.bank || null,
+          vnd_amount: data.vnd_amount ?? null,
+          vietqr_url: data.vietqr_url || null,
+          note: data.note || data.order_id,
+          expired_at: data.expired_at || null,
         };
         const k = storeKey();
         if (k) {
@@ -222,12 +332,20 @@ export default function RechargeClient() {
           } catch {}
         }
         setOrder(newOrder);
-        // Mở trang thanh toán ở TAB MỚI, không chiếm trang hiện tại.
-        window.open(data.payment_url, "_blank", "noopener,noreferrer");
-        setMsg({
-          type: "success",
-          text: "Payment page opened in a new tab. Complete the payment there — this page will update automatically.",
-        });
+
+        if (method === "crypto") {
+          // Mở trang thanh toán ở TAB MỚI, không chiếm trang hiện tại.
+          window.open(data.payment_url, "_blank", "noopener,noreferrer");
+          setMsg({
+            type: "success",
+            text: "Payment page opened in a new tab. Complete the payment there — this page will update automatically.",
+          });
+        } else {
+          setMsg({
+            type: "success",
+            text: "Order created. Scan the VietQR or transfer with the exact note below — this page updates automatically.",
+          });
+        }
         startPolling(newOrder.order_id);
       } else {
         setMsg({ type: "error", text: data.msg || "Could not create the payment, please try again." });
@@ -242,6 +360,33 @@ export default function RechargeClient() {
   // Only roles with a valid 24-hex id can receive tickets.
   const payableRoles = roles.filter((r) => /^[0-9a-f]{24}$/i.test(r.id || ""));
   const selected = payableRoles.find((r) => r.id === role) || null;
+  const isBank = method === "bank";
+  const isPaypal = method === "paypal";
+  const isWise = method === "wise";
+  const methodLabel = METHODS.find((m) => m.key === method)?.label || "Top Up";
+
+  // Callbacks cho PayPal Smart Buttons (đặt order + cập nhật trạng thái).
+  function onPaypalPending(data) {
+    const newOrder = {
+      method: "paypal",
+      order_id: data.order_id,
+      tickets: data.tickets,
+      amount: data.amount_usd ?? data.tickets,
+      server: selected?.server || "",
+      name: selected?.name || "",
+      logo: selected?.logo,
+      status: "pending",
+    };
+    setOrder(newOrder);
+    setMsg({ type: "info", text: "Complete the payment in the PayPal window..." });
+  }
+  function onPaypalSuccess(d) {
+    setOrder((prev) => (prev ? { ...prev, status: "confirmed", tickets: d.tickets ?? prev.tickets } : prev));
+    setMsg({ type: "success", text: "Payment successful! Your tickets have been sent to your in-game mailbox." });
+  }
+  function onPaypalError(text) {
+    setMsg({ type: "error", text: text || "Payment failed, please try again." });
+  }
 
   return (
     <section className="ninja-info-page">
@@ -255,7 +400,9 @@ export default function RechargeClient() {
           <div>
             <p className="ninja-eyebrow">Top Up</p>
             <h1>{username || "..."}</h1>
-            <p className="ninja-subtitle">Pay with crypto to get tickets for your character.</p>
+            <p className="ninja-subtitle">
+              Pay via Wise / Remitly or crypto to get tickets for your character.
+            </p>
           </div>
           <a className="ninja-status is-active" href="/info">
             Back
@@ -288,7 +435,24 @@ export default function RechargeClient() {
 
         <div className="ninja-grid">
           <article className="ninja-card ninja-card--actions">
-            <h2>Crypto / Binance</h2>
+            <h2>{methodLabel}</h2>
+
+            {/* Payment method switch */}
+            <div className="rc-method-tabs">
+              {METHODS.map((m) => (
+                <button
+                  type="button"
+                  key={m.key}
+                  className={`rc-method-tab ${method === m.key ? "is-active" : ""}`}
+                  onClick={() => {
+                    setMethod(m.key);
+                    setMsg(null);
+                  }}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
 
             {msg && <p className={`ninja-message is-${msg.type}`}>{msg.text}</p>}
 
@@ -359,24 +523,59 @@ export default function RechargeClient() {
               </div>
 
               <p className="ninja-message is-info" style={{ marginTop: 0 }}>
-                Pay with USDT / crypto via Cryptomus (supports Binance). You will be
-                redirected to the secure payment page. Tickets are credited
-                automatically after payment is confirmed.
+                {isBank
+                  ? "Pay by VND bank transfer via Pay2s (VietQR). Keep the transfer note exactly as shown — tickets are credited automatically once the bank confirms the payment."
+                  : isPaypal
+                  ? "Pay with PayPal (1 ticket = 1 USD). After payment, tickets are sent to your in-game mailbox automatically."
+                  : isWise
+                  ? "Pay in VND via Wise or Remitly to our receiving account (1 ticket = 1 USD). Tickets are credited manually after we confirm your transfer — contact us with the receipt."
+                  : "Pay with USDT / crypto via Cryptomus (supports Binance). You will be redirected to the secure payment page. Tickets are credited automatically after payment is confirmed."}
               </p>
 
-              <button type="submit" className="ninja-submit" disabled={busy}>
-                {busy ? "Creating payment..." : "Pay with Crypto"}
-              </button>
+              {isWise ? (
+                role && tickets ? (
+                  <WiseTransferPanel usd={tickets} charName={selected?.name} />
+                ) : (
+                  <p className="ninja-empty">Select a character and amount to see the Wise / Remitly transfer details.</p>
+                )
+              ) : isPaypal ? (
+                role && tickets ? (
+                  <PayPalCheckout
+                    accountId={account?.account_id}
+                    role={role}
+                    tickets={tickets}
+                    onPending={onPaypalPending}
+                    onSuccess={onPaypalSuccess}
+                    onError={onPaypalError}
+                  />
+                ) : (
+                  <p className="ninja-empty">Select a character and amount to pay with PayPal.</p>
+                )
+              ) : (
+                <button type="submit" className="ninja-submit" disabled={busy}>
+                  {busy ? "Creating order..." : isBank ? "Pay by Bank Transfer" : "Pay with Crypto"}
+                </button>
+              )}
             </form>
           </article>
 
           <article className="ninja-card ninja-card--actions">
             <h2>Current Order</h2>
-            {order ? (
+            {order && order.method === method ? (
               <div className="rc-order">
                 <div className="rc-order-row">
                   <span>Order</span>
                   <strong>{order.order_id}</strong>
+                </div>
+                <div className="rc-order-row">
+                  <span>Method</span>
+                  <strong>
+                    {order.method === "bank"
+                      ? "Bank Transfer (Pay2s)"
+                      : order.method === "paypal"
+                      ? "PayPal"
+                      : "Crypto"}
+                  </strong>
                 </div>
                 <div className="rc-order-row">
                   <span>Character</span>
@@ -398,7 +597,22 @@ export default function RechargeClient() {
                   </span>
                 </div>
 
-                {order.status === "pending" && (
+                {order.status === "pending" && order.method === "bank" && (
+                  <>
+                    <BankTransferPanel order={order} />
+                    <div className="rc-order-actions">
+                      <button
+                        type="button"
+                        className="ninja-submit ninja-submit--muted"
+                        onClick={() => checkOnce(order.order_id)}
+                      >
+                        Check now
+                      </button>
+                    </div>
+                  </>
+                )}
+
+                {order.status === "pending" && order.method === "crypto" && (
                   <>
                     <p className="ninja-message is-info" style={{ marginTop: 4 }}>
                       A transaction is in progress. Keep this page open — it updates
@@ -424,6 +638,13 @@ export default function RechargeClient() {
                   </>
                 )}
 
+                {order.status === "pending" && order.method === "paypal" && (
+                  <p className="ninja-message is-info" style={{ marginTop: 4 }}>
+                    Complete the payment in the PayPal window. This page updates
+                    automatically once the payment is confirmed.
+                  </p>
+                )}
+
                 {order.status === "confirmed" && (
                   <p className="ninja-message is-success" style={{ marginTop: 4 }}>
                     ✓ Payment successful! {order.tickets} tickets have been credited
@@ -431,9 +652,16 @@ export default function RechargeClient() {
                   </p>
                 )}
 
-                {["expired", "cancelled", "failed", "underpaid"].includes(order.status) && (
+                {["expired", "cancelled", "failed"].includes(order.status) && (
                   <p className="ninja-message is-error" style={{ marginTop: 4 }}>
                     This order is {order.status}. You can create a new one.
+                  </p>
+                )}
+
+                {order.status === "underpaid" && (
+                  <p className="ninja-message is-error" style={{ marginTop: 4 }}>
+                    The amount received is less than required. Please contact support with
+                    your order ID <strong>{order.order_id}</strong>.
                   </p>
                 )}
 
@@ -442,9 +670,12 @@ export default function RechargeClient() {
                 </button>
               </div>
             ) : (
-              <p className="ninja-empty">No crypto orders yet.</p>
+              <p className="ninja-empty">No active orders yet.</p>
             )}
-            <a href="/info/payment-history?tab=crypto" className="ninja-history-more">
+            <a
+              href={`/info/payment-history?tab=${isBank ? "pay2s" : isPaypal ? "paypal" : "crypto"}`}
+              className="ninja-history-more"
+            >
               View full history
             </a>
           </article>
