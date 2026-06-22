@@ -5,8 +5,9 @@ import { useSelector } from "react-redux";
 import { selectAccount, selectIdentifier, selectRehydrated } from "@/lib/authSlice";
 import PayPalCheckout from "@/components/PayPalCheckout";
 
-// Ticket price table: 1 USD = 1 ticket.
+// Bảng giá: grid là số USD; tỉ lệ 1 USD = 10 ticket. Ticket giao = usd * TICKETS_PER_USD.
 const AMOUNTS = [1, 5, 10, 25, 50, 75, 100, 500];
+const TICKETS_PER_USD = 10;
 const TICKET_ICON = "/img_fix/icon_ticket.png";
 
 const STATUS = {
@@ -22,7 +23,7 @@ const STATUS = {
 const METHODS = [
   // { key: "bank", label: "Bank Transfer (Pay2s)" },
   // { key: "paypal", label: "PayPal" },
-  { key: "wise", label: "Wise / Remitly" },
+  { key: "wise", label: "Wise / Remitly / Vietnam Bank" },
   { key: "crypto", label: "Crypto / Binance" },
 ];
 
@@ -132,7 +133,8 @@ function WiseTransferPanel({ usd, charName }) {
         ))}
       </div>
       <p className="ninja-message is-info" style={{ marginTop: 4 }}>
-        Transfer the equivalent of <strong>${usd}</strong> (1 ticket = 1 USD) in VND via{" "}
+        Transfer the equivalent of <strong>${usd}</strong> in VND (you will receive{" "}
+        <strong>{usd * 10} tickets</strong>, 1 USD = 10 tickets) via{" "}
         <strong>Wise</strong> or <strong>Remitly</strong> to the account above. After paying,
         message our{" "}
         <a href="https://discord.gg/PreE9R3p7F" target="_blank" rel="noreferrer">Discord</a>{" "}
@@ -158,7 +160,7 @@ export default function RechargeClient() {
   const [loading, setLoading] = useState(true);
   const [method, setMethod] = useState("wise"); // 'wise' | 'crypto' (paypal/bank tạm ẩn)
   const [role, setRole] = useState(""); // role_id
-  const [tickets, setTickets] = useState(0);
+  const [usd, setUsd] = useState(0); // số USD chọn ở grid; ticket giao = usd * TICKETS_PER_USD
   const [busy, setBusy] = useState(false);
   const [open, setOpen] = useState(false);
   const [order, setOrder] = useState(null); // đơn nạp hiện tại
@@ -287,7 +289,7 @@ export default function RechargeClient() {
       setMsg({ type: "error", text: "Please select a character." });
       return;
     }
-    if (!tickets) {
+    if (!usd) {
       setMsg({ type: "error", text: "Please select an amount." });
       return;
     }
@@ -301,7 +303,7 @@ export default function RechargeClient() {
         body: JSON.stringify({
           account_id: account?.account_id,
           role_id: role,
-          tickets: Number(tickets),
+          tickets: Number(usd) * TICKETS_PER_USD, // số ticket giao thật
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -313,8 +315,8 @@ export default function RechargeClient() {
         const newOrder = {
           method,
           order_id: data.order_id,
-          tickets: data.tickets ?? Number(tickets),
-          amount: Number(tickets),
+          tickets: data.tickets ?? Number(usd) * TICKETS_PER_USD,
+          amount: Number(usd),
           server: selected?.server || "",
           name: selected?.name || "",
           logo: selected?.logo,
@@ -512,13 +514,13 @@ export default function RechargeClient() {
                     <button
                       type="button"
                       key={amt}
-                      className={`rc-amount ${tickets === amt ? "is-active" : ""}`}
-                      onClick={() => setTickets(amt)}
+                      className={`rc-amount ${usd === amt ? "is-active" : ""}`}
+                      onClick={() => setUsd(amt)}
                     >
                       <img src={TICKET_ICON} alt="ticket" />
                       <span className="rc-usd">${amt}</span>
                       <span className="rc-tickets">
-                        {amt} {amt === 1 ? "ticket" : "tickets"}
+                        {amt * TICKETS_PER_USD} tickets
                       </span>
                     </button>
                   ))}
@@ -529,24 +531,24 @@ export default function RechargeClient() {
                 {isBank
                   ? "Pay by VND bank transfer via Pay2s (VietQR). Keep the transfer note exactly as shown — tickets are credited automatically once the bank confirms the payment."
                   : isPaypal
-                  ? "Pay with PayPal (1 ticket = 1 USD). After payment, tickets are sent to your in-game mailbox automatically."
+                  ? "Pay with PayPal (1 USD = 10 tickets). After payment, tickets are sent to your in-game mailbox automatically."
                   : isWise
-                  ? "Pay in VND via Wise or Remitly to our receiving account (1 ticket = 1 USD). Tickets are credited manually after we confirm your transfer — contact us with the receipt."
-                  : "Pay with USDT / crypto via Cryptomus (supports Binance). You will be redirected to the secure payment page. Tickets are credited automatically after payment is confirmed."}
+                  ? "Pay in VND via Wise or Remitly to our receiving account (1 USD = 10 tickets). Tickets are credited manually after we confirm your transfer — contact us with the receipt."
+                  : "Pay with USDT / crypto via Cryptomus (supports Binance, 1 USD = 10 tickets). You will be redirected to the secure payment page. Tickets are credited automatically after payment is confirmed."}
               </p>
 
               {isWise ? (
-                role && tickets ? (
-                  <WiseTransferPanel usd={tickets} charName={selected?.name} />
+                role && usd ? (
+                  <WiseTransferPanel usd={usd} charName={selected?.name} />
                 ) : (
                   <p className="ninja-empty">Select a character and amount to see the Wise / Remitly transfer details.</p>
                 )
               ) : isPaypal ? (
-                role && tickets ? (
+                role && usd ? (
                   <PayPalCheckout
                     accountId={account?.account_id}
                     role={role}
-                    tickets={tickets}
+                    tickets={usd * TICKETS_PER_USD}
                     onPending={onPaypalPending}
                     onSuccess={onPaypalSuccess}
                     onError={onPaypalError}
