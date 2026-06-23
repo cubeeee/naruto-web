@@ -93,8 +93,6 @@ export default function CurrencyConverter({ usd = 1 }) {
           ))}
         </select>
       </div>
-      <div className="rc-fx-note">1 USD = {fmt(rates.VND, "VND")} VND</div>
-
       {/* Bộ đổi bất kỳ tiền tệ → USD */}
       <div className="rc-fx-conv">
         <span className="rc-fx-conv-label">Convert any currency to USD</span>
