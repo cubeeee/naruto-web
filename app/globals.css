@@ -525,6 +525,45 @@ body {
 /* ===== PayPal Smart Buttons ===== */
 .rc-paypal-buttons { min-height: 50px; margin-top: 4px; }
 
+/* ===== /recharge: bộ quy đổi tiền tệ ===== */
+.rc-fx {
+  margin: 14px 0 4px; padding: 14px 16px; border-radius: 10px;
+  border: 1px solid rgba(246, 215, 122, 0.45);
+  background:
+    linear-gradient(180deg, rgba(240, 161, 42, 0.12), rgba(0, 0, 0, 0.35)),
+    rgba(0, 0, 0, 0.3);
+}
+.rc-fx-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.rc-fx-title { font-weight: 800; color: #fff2a7; letter-spacing: 0.3px; }
+.rc-fx-src {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+  color: #bdb5a2; border: 1px solid rgba(246, 215, 122, 0.3);
+  padding: 2px 8px; border-radius: 999px;
+}
+.rc-fx-main { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.rc-fx-usd { font-size: 22px; font-weight: 800; color: #fff; }
+.rc-fx-eq { font-size: 18px; color: #d8d2c2; }
+.rc-fx-amount {
+  font-size: 24px; font-weight: 800; color: #ffdf75;
+  text-shadow: 0 0 12px rgba(255, 200, 80, 0.35);
+}
+.rc-fx-cur, .rc-fx-conv-row select {
+  margin-left: auto; padding: 8px 10px; border-radius: 6px;
+  border: 1px solid rgba(246, 215, 122, 0.4);
+  background: rgba(0, 0, 0, 0.5); color: #fff; font-weight: 700; cursor: pointer;
+}
+.rc-fx-conv-row select { margin-left: 0; }
+.rc-fx-note { margin-top: 6px; font-size: 13px; color: #d8d2c2; }
+.rc-fx-conv { margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(246, 215, 122, 0.25); }
+.rc-fx-conv-label { display: block; font-size: 12px; color: #bdb5a2; margin-bottom: 6px; }
+.rc-fx-conv-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.rc-fx-conv-row input {
+  flex: 1 1 120px; min-width: 100px; padding: 8px 10px; border-radius: 6px;
+  border: 1px solid rgba(246, 215, 122, 0.4);
+  background: rgba(0, 0, 0, 0.5); color: #fff; font-weight: 700;
+}
+.rc-fx-conv-eq { font-weight: 800; color: #fff2a7; white-space: nowrap; }
+
 /* ===== /recharge: ghi chú hỗ trợ (NỔI BẬT — phát sáng nhấp nháy) ===== */
 @keyframes rcGlow {
   0%, 100% {

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAccount, selectIdentifier, selectRehydrated } from "@/lib/authSlice";
 import PayPalCheckout from "@/components/PayPalCheckout";
+import CurrencyConverter from "@/components/CurrencyConverter";
 
 // Bảng giá: grid là số USD; tỉ lệ 1 USD = 10 ticket. Ticket giao = usd * TICKETS_PER_USD.
 const AMOUNTS = [1, 5, 10, 25, 50, 75, 100, 500];
@@ -526,6 +527,9 @@ export default function RechargeClient() {
                   ))}
                 </div>
               </div>
+
+              {/* Bộ quy đổi tiền tệ — số tiền nạp quy ra VND/đơn vị khác + đổi tiền sang USD */}
+              <CurrencyConverter usd={usd || 1} />
 
               <p className="ninja-message is-info" style={{ marginTop: 0 }}>
                 {isBank
