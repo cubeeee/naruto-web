@@ -3,16 +3,21 @@
 // sm trở lên: giữ bố cục ngang gốc (icon | lưới 3x2 | nạp thẻ).
 // Ảnh đặt trực tiếp trong /public/. Chưa có bg-dl.webp nên dùng khung .panel làm nền.
 
-const BUTTONS = [
-  { src: "/ios-dl.webp", alt: "Download IOS", href: "/ios", active: true },
-  { src: "/android-dl.webp", alt: "Download Android", href: "/android", active: true },
-  { src: "/h5-dl.webp", alt: "Download H5", active: false },
-  { src: "/apk-dl.webp", alt: "Download APK", href: "https://www.dropbox.com/scl/fi/0sdmgjaynu76xnwxortso/ShinobiInfinityWar-v2.2.0.apk?rlkey=uehntqzogghby766lo97wbl3o&st=eaf3kgva&dl=1", active: true },
-  { src: "/pc-dl.webp", alt: "Download PC", href: "https://www.dropbox.com/scl/fi/0sdmgjaynu76xnwxortso/ShinobiInfinityWar-v2.2.0.apk?rlkey=uehntqzogghby766lo97wbl3o&st=eaf3kgva&dl=1", active: true },
-  { src: "/gc-dl.webp", alt: "Giftcode", active: true, button: true },
-];
+import { getLatestApkUrl } from "@/lib/version";
 
-export default function DownloadBox() {
+export default async function DownloadBox() {
+  // Link APK lấy động từ version.php (DB app_version) -> tự cập nhật khi ra bản mới.
+  const { url: apkUrl } = await getLatestApkUrl();
+
+  const BUTTONS = [
+    { src: "/ios-dl.webp", alt: "Download IOS", href: "/ios", active: true },
+    { src: "/android-dl.webp", alt: "Download Android", href: "/android", active: true },
+    { src: "/h5-dl.webp", alt: "Download H5", active: false },
+    { src: "/apk-dl.webp", alt: "Download APK", href: apkUrl, active: true },
+    { src: "/pc-dl.webp", alt: "Download PC", href: apkUrl, active: true },
+    { src: "/gc-dl.webp", alt: "Giftcode", active: true, button: true },
+  ];
+
   return (
     <div
       id="download"

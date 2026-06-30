@@ -436,8 +436,11 @@ Pick the strongest ninja, build the strongest lineup, make friends, challenge to
 
 <script>
   document.querySelector('.btn-install').addEventListener('click',function(){
-    // Tải thẳng APK từ Dropbox (dl=1 = tải trực tiếp).
-    window.location.href = 'https://www.dropbox.com/scl/fi/0sdmgjaynu76xnwxortso/ShinobiInfinityWar-v2.2.0.apk?rlkey=uehntqzogghby766lo97wbl3o&st=eaf3kgva&dl=1';
+    // Lấy link APK mới nhất từ /api/version (DB app_version), fallback nếu lỗi.
+    var FALLBACK = 'https://cdn.siwgame.com/ShinobiInfinityWar-v2.2.2.apk';
+    fetch('/api/version').then(function(r){return r.json();}).then(function(d){
+      window.location.href = (d && d.url) ? d.url : FALLBACK;
+    }).catch(function(){ window.location.href = FALLBACK; });
   });
   document.querySelectorAll('.dtab').forEach(t=>{
     t.addEventListener('click',()=>{
